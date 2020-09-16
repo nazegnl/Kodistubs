@@ -10,64 +10,66 @@ through Kodi's standard menu structure. While plugins don't have the same
 flexibility as scripts, they boast significantly quicker development time and a
 more consistent user experience.
 """
-from typing import List, Tuple, Optional
-
-import xbmcgui as _xbmcgui
+from typing import Union, List, Dict, Tuple, Optional
 
 __kodistubs__ = True
 
-SORT_METHOD_ALBUM = 14
-SORT_METHOD_ALBUM_IGNORE_THE = 15
-SORT_METHOD_ARTIST = 11
-SORT_METHOD_ARTIST_IGNORE_THE = 13
-SORT_METHOD_BITRATE = 43
-SORT_METHOD_CHANNEL = 41
-SORT_METHOD_COUNTRY = 17
-SORT_METHOD_DATE = 3
-SORT_METHOD_DATEADDED = 21
-SORT_METHOD_DATE_TAKEN = 44
-SORT_METHOD_DRIVE_TYPE = 6
-SORT_METHOD_DURATION = 8
-SORT_METHOD_EPISODE = 24
-SORT_METHOD_FILE = 5
-SORT_METHOD_FULLPATH = 35
-SORT_METHOD_GENRE = 16
-SORT_METHOD_LABEL = 1
-SORT_METHOD_LABEL_IGNORE_FOLDERS = 36
-SORT_METHOD_LABEL_IGNORE_THE = 2
-SORT_METHOD_LASTPLAYED = 37
-SORT_METHOD_LISTENERS = 39
-SORT_METHOD_MPAA_RATING = 31
+
 SORT_METHOD_NONE = 0
-SORT_METHOD_PLAYCOUNT = 38
-SORT_METHOD_PLAYLIST_ORDER = 23
-SORT_METHOD_PRODUCTIONCODE = 28
-SORT_METHOD_PROGRAM_COUNT = 22
-SORT_METHOD_SIZE = 4
-SORT_METHOD_SONG_RATING = 29
-SORT_METHOD_SONG_USER_RATING = 30
-SORT_METHOD_STUDIO = 33
-SORT_METHOD_STUDIO_IGNORE_THE = 34
-SORT_METHOD_TITLE = 9
-SORT_METHOD_TITLE_IGNORE_THE = 10
-SORT_METHOD_TRACKNUM = 7
-SORT_METHOD_UNSORTED = 40
-SORT_METHOD_VIDEO_RATING = 19
-SORT_METHOD_VIDEO_RUNTIME = 32
-SORT_METHOD_VIDEO_SORT_TITLE = 26
-SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE = 27
-SORT_METHOD_VIDEO_TITLE = 25
-SORT_METHOD_VIDEO_USER_RATING = 20
-SORT_METHOD_VIDEO_YEAR = 18
+SORT_METHOD_LABEL = 0
+SORT_METHOD_LABEL_IGNORE_THE = 0
+SORT_METHOD_DATE = 0
+SORT_METHOD_SIZE = 0
+SORT_METHOD_FILE = 0
+SORT_METHOD_DRIVE_TYPE = 0
+SORT_METHOD_TRACKNUM = 0
+SORT_METHOD_DURATION = 0
+SORT_METHOD_TITLE = 0
+SORT_METHOD_TITLE_IGNORE_THE = 0
+SORT_METHOD_ARTIST = 0
+SORT_METHOD_ARTIST_IGNORE_THE = 0
+SORT_METHOD_ALBUM = 0
+SORT_METHOD_ALBUM_IGNORE_THE = 0
+SORT_METHOD_GENRE = 0
+SORT_METHOD_VIDEO_YEAR = 0
+SORT_METHOD_VIDEO_RATING = 0
+SORT_METHOD_PROGRAM_COUNT = 0
+SORT_METHOD_PLAYLIST_ORDER = 0
+SORT_METHOD_EPISODE = 0
+SORT_METHOD_VIDEO_TITLE = 0
+SORT_METHOD_VIDEO_SORT_TITLE = 0
+SORT_METHOD_VIDEO_SORT_TITLE_IGNORE_THE = 0
+SORT_METHOD_PRODUCTIONCODE = 0
+SORT_METHOD_SONG_RATING = 0
+SORT_METHOD_MPAA_RATING = 0
+SORT_METHOD_VIDEO_RUNTIME = 0
+SORT_METHOD_STUDIO = 0
+SORT_METHOD_STUDIO_IGNORE_THE = 0
+SORT_METHOD_UNSORTED = 0
+SORT_METHOD_BITRATE = 0
+SORT_METHOD_LISTENERS = 0
+SORT_METHOD_COUNTRY = 0
+SORT_METHOD_DATEADDED = 0
+SORT_METHOD_FULLPATH = 0
+SORT_METHOD_LABEL_IGNORE_FOLDERS = 0
+SORT_METHOD_LASTPLAYED = 0
+SORT_METHOD_PLAYCOUNT = 0
+SORT_METHOD_CHANNEL = 0
+SORT_METHOD_DATE_TAKEN = 0
+SORT_METHOD_VIDEO_USER_RATING = 0
+SORT_METHOD_SONG_USER_RATING = 0
+
+
 
 
 def addDirectoryItem(handle: int,
                      url: str,
-                     listitem: _xbmcgui.ListItem,
+                     listitem: 'xbmcgui.ListItem',
                      isFolder: bool = False,
                      totalItems: int = 0) -> bool:
     """
-    Callback function to pass directory contents back to Kodi.
+    \python_func{ xbmcplugin.addDirectoryItem(handle, url, listitem [,isFolder,
+    totalItems]) } Callback function to pass directory contents back to Kodi.
 
     :param handle: integer - handle the plugin was started with.
     :param url: string - url of the entry. would be ``plugin://`` for another virtual
@@ -93,9 +95,10 @@ def addDirectoryItem(handle: int,
 
 
 def addDirectoryItems(handle: int,
-                      items: List[Tuple[str, _xbmcgui.ListItem, bool]],
+                      items: List[Tuple[str, 'xbmcgui.ListItem', bool]],
                       totalItems: int = 0) -> bool:
     """
+    \python_func{ xbmcplugin.addDirectoryItems(handle, items[, totalItems]) }
     Callback function to pass directory contents back to Kodi as a list.
 
     :param handle: integer - handle the plugin was started with.
@@ -121,8 +124,9 @@ def endOfDirectory(handle: int,
                    updateListing: bool = False,
                    cacheToDisc: bool = True) -> None:
     """
-    Callback function to tell Kodi that the end of the directory listing in a
-    virtualPythonFolder module is reached.
+    \python_func{ xbmcplugin.endOfDirectory(handle[, succeeded, updateListing,
+    cacheToDisc]) } Callback function to tell Kodi that the end of the directory
+    listing in a virtualPythonFolder module is reached.
 
     :param handle: integer - handle the plugin was started with.
     :param succeeded: [opt] bool - True=script completed successfully(Default)/False=Script
@@ -142,9 +146,10 @@ def endOfDirectory(handle: int,
 
 def setResolvedUrl(handle: int,
                    succeeded: bool,
-                   listitem: _xbmcgui.ListItem) -> None:
+                   listitem: 'xbmcgui.ListItem') -> None:
     """
-    Callback function to tell Kodi that the file plugin has been resolved to a url
+    \python_func{ xbmcplugin.setResolvedUrl(handle, succeeded, listitem) } Callback
+    function to tell Kodi that the file plugin has been resolved to a url
 
     :param handle: integer - handle the plugin was started with.
     :param succeeded: bool - True=script completed successfully/False=Script did not.
@@ -163,11 +168,11 @@ def addSortMethod(handle: int,
                   sortMethod: int,
                   label2Mask: str = "") -> None:
     """
-    Adds a sorting method for the media list.
+    \python_func{ xbmcplugin.addSortMethod(handle, sortMethod [,label2Mask]) } Adds
+    a sorting method for the media list.
 
     :param handle: integer - handle the plugin was started with.
-    :param sortMethod: integer - see available sort methods at the bottom (or see
-        SortFileItem.h).
+    :param sortMethod: integer - see available sort methods at the bottom (or see SortUtils).
 
     =================================================================== ======================================================= 
     Value                                                               Description                                             
@@ -233,10 +238,10 @@ def addSortMethod(handle: int,
     .. note::
         to add multiple sort methods just call the method multiple times.
 
-      Added new sort **SORT_METHOD_DATE_TAKEN**, **SORT_METHOD_COUNTRY**, **S
-    ORT_METHOD_DATEADDED**, **SORT_METHOD_FULLPATH**, **SORT_METHOD_LABEL_IG
-    NORE_FOLDERS**, **SORT_METHOD_LASTPLAYED**, **SORT_METHOD_PLAYCOUNT**, **
-    SORT_METHOD_CHANNEL**.  Added new
+     @python_v13 Added new sort **SORT_METHOD_DATE_TAKEN**, **SORT_METHOD_CO
+    UNTRY**, **SORT_METHOD_DATEADDED**, **SORT_METHOD_FULLPATH**, **SORT_METH
+    OD_LABEL_IGNORE_FOLDERS**, **SORT_METHOD_LASTPLAYED**, **SORT_METHOD_PLA
+    YCOUNT**, **SORT_METHOD_CHANNEL**. @python_v17 Added new
     sort **SORT_METHOD_VIDEO_USER_RATING**.Example::
 
         ..
@@ -248,7 +253,8 @@ def addSortMethod(handle: int,
 
 def getSetting(handle: int, id: str) -> str:
     """
-    Returns the value of a setting as a string.
+    \python_func{ xbmcplugin.getSetting(handle, id) } Returns the value of a setting
+    as a string.
 
     :param handle: integer - handle the plugin was started with.
     :param id: string - id of the setting that the module needs to access.
@@ -268,7 +274,8 @@ def getSetting(handle: int, id: str) -> str:
 
 def setSetting(handle: int, id: str, value: str) -> None:
     """
-    Sets a plugin setting for the current running plugin.
+    \python_func{ xbmcplugin.setSetting(handle, id, value) } Sets a plugin setting
+    for the current running plugin.
 
     :param handle: integer - handle the plugin was started with.
     :param id: string - id of the setting that the module needs to access.
@@ -285,7 +292,7 @@ def setSetting(handle: int, id: str, value: str) -> None:
 
 def setContent(handle: int, content: str) -> None:
     """
-    Sets the plugins content.
+    \python_func{ xbmcplugin.setContent(handle, content) } Sets the plugins content.
 
     :param handle: integer - handle the plugin was started with.
     :param content: string - content type (eg. movies)
@@ -303,7 +310,7 @@ def setContent(handle: int, content: str) -> None:
     Use **videos** for all videos which do not apply to the more specific mentioned
     ones like "movies", "episodes" etc. A good example is youtube.
 
-      Added new **games** contentExample::
+     @python_v18 Added new **games** contentExample::
 
         ..
         xbmcplugin.setContent(int(sys.argv[1]), 'movies')
@@ -314,7 +321,8 @@ def setContent(handle: int, content: str) -> None:
 
 def setPluginCategory(handle: int, category: str) -> None:
     """
-    Sets the plugins name for skins to display.
+    \python_func{ xbmcplugin.setPluginCategory(handle, category) } Sets the plugins
+    name for skins to display.
 
     :param handle: integer - handle the plugin was started with.
     :param category: string or unicode - plugins sub category.
@@ -334,7 +342,8 @@ def setPluginFanart(handle: int,
                     color2: Optional[str] = None,
                     color3: Optional[str] = None) -> None:
     """
-    Sets the plugins fanart and color for skins to display.
+    \python_func{ xbmcplugin.setPluginFanart(handle, image, color1, color2, color3)
+    } Sets the plugins fanart and color for skins to display.
 
     :param handle: integer - handle the plugin was started with.
     :param image: [opt] string - path to fanart image.
@@ -353,7 +362,8 @@ def setPluginFanart(handle: int,
 
 def setProperty(handle: int, key: str, value: str) -> None:
     """
-    Sets a container property for this plugin.
+    \python_func{ xbmcplugin.setProperty(handle, key, value) } Sets a container
+    property for this plugin.
 
     :param handle: integer - handle the plugin was started with.
     :param key: string - property name.
@@ -369,3 +379,4 @@ def setProperty(handle: int, key: str, value: str) -> None:
         ..
     """
     pass
+

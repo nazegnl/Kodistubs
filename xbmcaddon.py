@@ -3,11 +3,36 @@
 # to correct code style and docstrings formatting.
 # License: GPL v.3 <https://www.gnu.org/licenses/gpl-3.0.en.html>
 """
-Kodi's addon class
+**Kodi's addon class.**
+
+Offers classes and functions that manipulate the add-on settings, information
+and localization.
+
+\python_class{ xbmcaddon.Addon([id]) }
+
+Creates a new AddOn class.
+
+:param id: [opt] string - id of the addon as specified inaddon.xml
+
+.. note::
+    Specifying the addon id is not needed.  Important however is that
+    the addon folder has the same name as the AddOn id provided
+    inaddon.xml.  You can optionally specify the addon id from another
+    installed addon to retrieve settings from it.
+
+ @python_v13 **id** is optional as it will be auto detected for this
+add-on instance.Example::
+
+    ..
+    self.Addon = xbmcaddon.Addon()
+    self.Addon = xbmcaddon.Addon('script.foo.bar')
+    ..
 """
-from typing import Optional
+from typing import Union, List, Dict, Tuple, Optional
 
 __kodistubs__ = True
+
+
 
 
 class Addon:
@@ -16,6 +41,8 @@ class Addon:
 
     Offers classes and functions that manipulate the add-on settings, information
     and localization.
+
+    \python_class{ xbmcaddon.Addon([id]) }
 
     Creates a new AddOn class.
 
@@ -27,8 +54,8 @@ class Addon:
         inaddon.xml.  You can optionally specify the addon id from another
         installed addon to retrieve settings from it.
 
-    **id** is optional as it will be auto detected for this add-on
-    instance.Example::
+     @python_v13 **id** is optional as it will be auto detected for this
+    add-on instance.Example::
 
         ..
         self.Addon = xbmcaddon.Addon()
@@ -41,13 +68,14 @@ class Addon:
     
     def getLocalizedString(self, id: int) -> str:
         """
-        Returns an addon's localized 'unicode string'.
+        \python_func{ xbmcaddon.Addon([id]).getLocalizedString(id) } Returns an addon's
+        localized 'string'.
 
         :param id: integer - id# for string you want to localize.
-        :return: Localized 'unicode string'
+        :return: Localized 'string'
 
-        **id** is optional as it will be auto detected for this add-on
-        instance.Example::
+         @python_v13 **id** is optional as it will be auto detected for this
+        add-on instance.Example::
 
             ..
             locstr = self.Addon.`getLocalizedString`(32000)
@@ -57,13 +85,14 @@ class Addon:
     
     def getSetting(self, id: str) -> str:
         """
-        Returns the value of a setting as a unicode string.
+        \python_func{ xbmcaddon.Addon([id]).getSetting(id) } Returns the value of a
+        setting as string.
 
         :param id: string - id of the setting that the module needs to access.
-        :return: Setting as a unicode string
+        :return: Setting as a string
 
-        **id** is optional as it will be auto detected for this add-on
-        instance.Example::
+         @python_v13 **id** is optional as it will be auto detected for this
+        add-on instance.Example::
 
             ..
             apikey = self.Addon.`getSetting`('apikey')
@@ -73,12 +102,13 @@ class Addon:
     
     def getSettingBool(self, id: str) -> bool:
         """
-        Returns the value of a setting as a boolean.
+        \python_func{ xbmcaddon.Addon([id]).getSettingBool(id) } Returns the value of a
+        setting as a boolean.
 
         :param id: string - id of the setting that the module needs to access.
         :return: Setting as a boolean
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             enabled = self.Addon.getSettingBool('enabled')
@@ -88,12 +118,13 @@ class Addon:
     
     def getSettingInt(self, id: str) -> int:
         """
-        Returns the value of a setting as an integer.
+        \python_func{ xbmcaddon.Addon([id]).getSettingInt(id) } Returns the value of a
+        setting as an integer.
 
         :param id: string - id of the setting that the module needs to access.
         :return: Setting as an integer
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             max = self.Addon.getSettingInt('max')
@@ -103,12 +134,13 @@ class Addon:
     
     def getSettingNumber(self, id: str) -> float:
         """
-        Returns the value of a setting as a floating point number.
+        \python_func{ xbmcaddon.Addon([id]).getSettingNumber(id) } Returns the value of
+        a setting as a floating point number.
 
         :param id: string - id of the setting that the module needs to access.
         :return: Setting as a floating point number
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             max = self.Addon.getSettingNumber('max')
@@ -118,12 +150,13 @@ class Addon:
     
     def getSettingString(self, id: str) -> str:
         """
-        Returns the value of a setting as a unicode string.
+        \python_func{ xbmcaddon.Addon([id]).getSettingString(id) } Returns the value of
+        a setting as a string.
 
         :param id: string - id of the setting that the module needs to access.
-        :return: Setting as a unicode string
+        :return: Setting as a string
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             apikey = self.Addon.getSettingString('apikey')
@@ -133,16 +166,17 @@ class Addon:
     
     def setSetting(self, id: str, value: str) -> None:
         """
-        Sets a script setting.
+        \python_func{ xbmcaddon.Addon([id]).setSetting(id, value) } Sets a script
+        setting.
 
         :param id: string - id of the setting that the module needs to access.
-        :param value: string or unicode - value of the setting.
+        :param value: string - value of the setting.
 
         .. note::
             You can use the above as keywords for arguments.
 
-        **id** is optional as it will be auto detected for this add-on
-        instance.Example::
+         @python_v13 **id** is optional as it will be auto detected for this
+        add-on instance.Example::
 
             ..
             self.Addon.`setSetting`(id='username', value='teamkodi')
@@ -152,7 +186,8 @@ class Addon:
     
     def setSettingBool(self, id: str, value: bool) -> bool:
         """
-        Sets a script setting.
+        \python_func{ xbmcaddon.Addon([id]).setSettingBool(id, value) } Sets a script
+        setting.
 
         :param id: string - id of the setting that the module needs to access.
         :param value: boolean - value of the setting.
@@ -161,7 +196,7 @@ class Addon:
         .. note::
             You can use the above as keywords for arguments.
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             self.Addon.setSettingBool(id='enabled', value=True)
@@ -171,7 +206,8 @@ class Addon:
     
     def setSettingInt(self, id: str, value: int) -> bool:
         """
-        Sets a script setting.
+        \python_func{ xbmcaddon.Addon([id]).setSettingInt(id, value) } Sets a script
+        setting.
 
         :param id: string - id of the setting that the module needs to access.
         :param value: integer - value of the setting.
@@ -180,7 +216,7 @@ class Addon:
         .. note::
             You can use the above as keywords for arguments.
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             self.Addon.setSettingInt(id='max', value=5)
@@ -190,7 +226,8 @@ class Addon:
     
     def setSettingNumber(self, id: str, value: float) -> bool:
         """
-        Sets a script setting.
+        \python_func{ xbmcaddon.Addon([id]).setSettingNumber(id, value) } Sets a script
+        setting.
 
         :param id: string - id of the setting that the module needs to access.
         :param value: float - value of the setting.
@@ -199,7 +236,7 @@ class Addon:
         .. note::
             You can use the above as keywords for arguments.
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             self.Addon.setSettingNumber(id='max', value=5.5)
@@ -209,7 +246,8 @@ class Addon:
     
     def setSettingString(self, id: str, value: str) -> bool:
         """
-        Sets a script setting.
+        \python_func{ xbmcaddon.Addon([id]).setSettingString(id, value) } Sets a script
+        setting.
 
         :param id: string - id of the setting that the module needs to access.
         :param value: string or unicode - value of the setting.
@@ -218,7 +256,7 @@ class Addon:
         .. note::
             You can use the above as keywords for arguments.
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ..
             self.Addon.setSettingString(id='username', value='teamkodi')
@@ -228,7 +266,8 @@ class Addon:
     
     def openSettings(self) -> None:
         """
-        Opens this scripts settings dialog.
+        \python_func{ xbmcaddon.Addon([id]).`openSettings()` } Opens this scripts
+        settings dialog.
 
         Example::
 
@@ -240,7 +279,8 @@ class Addon:
     
     def getAddonInfo(self, id: str) -> str:
         """
-        Returns the value of an addon property as a string.
+        \python_func{ xbmcaddon.Addon([id]).getAddonInfo(id) } Returns the value of an
+        addon property as a string.
 
         :param id: string - id of the property that the module needs to access.
 
@@ -264,3 +304,6 @@ class Addon:
             ..
         """
         return ""
+    
+
+

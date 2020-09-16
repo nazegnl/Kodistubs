@@ -8,208 +8,339 @@
 Offers classes and functions that manipulate the Graphical User Interface
 through windows, dialogs, and various control widgets.
 """
+import sys
 from typing import Union, List, Dict, Tuple, Optional
-
-import xbmc as _xbmc
 
 __kodistubs__ = True
 
-ACTION_NOOP = 999
-ACTION_PAGE_DOWN = 6
-ACTION_PAGE_UP = 5
-ACTION_PARENT_DIR = 9
-ACTION_PASTE = 180
-ACTION_PAUSE = 12
-ACTION_PLAYER_DEBUG = 27
-ACTION_PLAYER_FORWARD = 77
-ACTION_PLAYER_PLAY = 79
-ACTION_PLAYER_PLAYPAUSE = 229
-ACTION_PLAYER_PROCESS_INFO = 69
-ACTION_PLAYER_PROGRAM_SELECT = 70
-ACTION_PLAYER_RESET = 248
-ACTION_PLAYER_RESOLUTION_SELECT = 71
-ACTION_PLAYER_REWIND = 78
-ACTION_PREVIOUS_CHANNELGROUP = 187
-ACTION_PREVIOUS_MENU = 10
-ACTION_PREV_CONTROL = 182
-ACTION_PREV_ITEM = 15
-ACTION_PREV_LETTER = 141
-ACTION_PREV_PICTURE = 29
-ACTION_PREV_SCENE = 139
-ACTION_PVR_ANNOUNCE_REMINDERS = 193
-ACTION_PVR_PLAY = 188
-ACTION_PVR_PLAY_RADIO = 190
-ACTION_PVR_PLAY_TV = 189
-ACTION_PVR_SHOW_TIMER_RULE = 191
-ACTION_QUEUE_ITEM = 34
-ACTION_QUEUE_ITEM_NEXT = 251
-ACTION_RECORD = 170
-ACTION_RELOAD_KEYMAPS = 203
-ACTION_REMOVE_ITEM = 35
-ACTION_RENAME_ITEM = 87
-ACTION_REWIND = 17
-ACTION_ROTATE_PICTURE_CCW = 51
-ACTION_ROTATE_PICTURE_CW = 50
-ACTION_SCAN_ITEM = 201
-ACTION_SCROLL_DOWN = 112
-ACTION_SCROLL_UP = 111
-ACTION_SELECT_ITEM = 7
-ACTION_SETTINGS_LEVEL_CHANGE = 242
-ACTION_SETTINGS_RESET = 241
-ACTION_SET_RATING = 164
-ACTION_SHIFT = 118
-ACTION_SHOW_FULLSCREEN = 36
-ACTION_SHOW_GUI = 18
-ACTION_SHOW_INFO = 11
-ACTION_SHOW_OSD = 24
-ACTION_SHOW_OSD_TIME = 123
-ACTION_SHOW_PLAYLIST = 33
-ACTION_SHOW_SUBTITLES = 25
-ACTION_SHOW_VIDEOMENU = 134
-ACTION_SMALL_STEP_BACK = 76
-ACTION_STEP_BACK = 21
-ACTION_STEP_FORWARD = 20
-ACTION_STEREOMODE_NEXT = 235
-ACTION_STEREOMODE_PREVIOUS = 236
-ACTION_STEREOMODE_SELECT = 238
-ACTION_STEREOMODE_SET = 240
-ACTION_STEREOMODE_TOGGLE = 237
-ACTION_STEREOMODE_TOMONO = 239
-ACTION_STOP = 13
-ACTION_SUBTITLE_ALIGN = 232
-ACTION_SUBTITLE_DELAY = 162
-ACTION_SUBTITLE_DELAY_MIN = 52
-ACTION_SUBTITLE_DELAY_PLUS = 53
-ACTION_SUBTITLE_VSHIFT_DOWN = 231
-ACTION_SUBTITLE_VSHIFT_UP = 230
-ACTION_SWITCH_PLAYER = 234
-ACTION_SYMBOLS = 119
-ACTION_TAKE_SCREENSHOT = 85
-ACTION_TELETEXT_BLUE = 218
-ACTION_TELETEXT_GREEN = 216
-ACTION_TELETEXT_RED = 215
-ACTION_TELETEXT_YELLOW = 217
-ACTION_TOGGLE_COMMSKIP = 246
-ACTION_TOGGLE_DIGITAL_ANALOG = 202
-ACTION_TOGGLE_FONT = 249
-ACTION_TOGGLE_FULLSCREEN = 199
-ACTION_TOGGLE_SOURCE_DEST = 32
-ACTION_TOGGLE_WATCHED = 200
-ACTION_TOUCH_LONGPRESS = 411
-ACTION_TOUCH_LONGPRESS_TEN = 420
-ACTION_TOUCH_TAP = 401
-ACTION_TOUCH_TAP_TEN = 410
-ACTION_TRIGGER_OSD = 243
-ACTION_VIDEO_NEXT_STREAM = 250
-ACTION_VIS_PRESET_LOCK = 130
-ACTION_VIS_PRESET_NEXT = 128
-ACTION_VIS_PRESET_PREV = 129
-ACTION_VIS_PRESET_RANDOM = 131
-ACTION_VIS_PRESET_SHOW = 126
-ACTION_VIS_RATE_PRESET_MINUS = 133
-ACTION_VIS_RATE_PRESET_PLUS = 132
-ACTION_VOICE_RECOGNIZE = 300
-ACTION_VOLAMP = 90
-ACTION_VOLAMP_DOWN = 94
-ACTION_VOLAMP_UP = 93
-ACTION_VOLUME_DOWN = 89
-ACTION_VOLUME_SET = 245
-ACTION_VOLUME_UP = 88
-ACTION_VSHIFT_DOWN = 228
-ACTION_VSHIFT_UP = 227
-ACTION_ZOOM_IN = 31
-ACTION_ZOOM_LEVEL_NORMAL = 37
-ACTION_ZOOM_OUT = 30
-ALPHANUM_HIDE_INPUT = 2
-CONTROL_TEXT_OFFSET_X = 10
-CONTROL_TEXT_OFFSET_Y = 2
-HORIZONTAL = 0
-ICON_OVERLAY_HD = 6
-ICON_OVERLAY_LOCKED = 3
-ICON_OVERLAY_NONE = 0
-ICON_OVERLAY_RAR = 1
-ICON_OVERLAY_UNWATCHED = 4
-ICON_OVERLAY_WATCHED = 5
-ICON_OVERLAY_ZIP = 2
-ICON_TYPE_FILES = 106
-ICON_TYPE_MUSIC = 103
-ICON_TYPE_NONE = 101
-ICON_TYPE_PICTURES = 104
-ICON_TYPE_PROGRAMS = 102
-ICON_TYPE_SETTINGS = 109
-ICON_TYPE_VIDEOS = 105
-ICON_TYPE_WEATHER = 107
-INPUT_ALPHANUM = 0
-INPUT_DATE = 2
-INPUT_IPADDRESS = 4
-INPUT_NUMERIC = 1
-INPUT_PASSWORD = 5
-INPUT_TIME = 3
-INPUT_TYPE_DATE = 4
-INPUT_TYPE_IPADDRESS = 5
-INPUT_TYPE_NUMBER = 1
-INPUT_TYPE_PASSWORD = 6
-INPUT_TYPE_PASSWORD_NUMBER_VERIFY_NEW = 10
-INPUT_TYPE_SECONDS = 2
-INPUT_TYPE_TEXT = 0
-INPUT_TYPE_TIME = 3
-KEY_APPCOMMAND = 53248
-KEY_BUTTON_A = 256
-KEY_BUTTON_B = 257
-KEY_BUTTON_BACK = 275
-KEY_BUTTON_BLACK = 260
-KEY_BUTTON_DPAD_DOWN = 271
-KEY_BUTTON_DPAD_LEFT = 272
-KEY_BUTTON_DPAD_RIGHT = 273
-KEY_BUTTON_DPAD_UP = 270
-KEY_BUTTON_LEFT_ANALOG_TRIGGER = 278
-KEY_BUTTON_LEFT_THUMB_BUTTON = 276
-KEY_BUTTON_LEFT_THUMB_STICK = 264
-KEY_BUTTON_LEFT_THUMB_STICK_DOWN = 281
-KEY_BUTTON_LEFT_THUMB_STICK_LEFT = 282
-KEY_BUTTON_LEFT_THUMB_STICK_RIGHT = 283
-KEY_BUTTON_LEFT_THUMB_STICK_UP = 280
-KEY_BUTTON_LEFT_TRIGGER = 262
-KEY_BUTTON_RIGHT_ANALOG_TRIGGER = 279
-KEY_BUTTON_RIGHT_THUMB_BUTTON = 277
-KEY_BUTTON_RIGHT_THUMB_STICK = 265
-KEY_BUTTON_RIGHT_THUMB_STICK_DOWN = 267
-KEY_BUTTON_RIGHT_THUMB_STICK_LEFT = 268
-KEY_BUTTON_RIGHT_THUMB_STICK_RIGHT = 269
-KEY_BUTTON_RIGHT_THUMB_STICK_UP = 266
-KEY_BUTTON_RIGHT_TRIGGER = 263
-KEY_BUTTON_START = 274
-KEY_BUTTON_WHITE = 261
-KEY_BUTTON_X = 258
-KEY_BUTTON_Y = 259
-KEY_INVALID = 65535
-KEY_MOUSE_CLICK = 57344
-KEY_MOUSE_DOUBLE_CLICK = 57360
-KEY_MOUSE_DRAG = 57604
-KEY_MOUSE_DRAG_END = 57606
-KEY_MOUSE_DRAG_START = 57605
-KEY_MOUSE_END = 61439
-KEY_MOUSE_LONG_CLICK = 57376
-KEY_MOUSE_MIDDLECLICK = 57346
-KEY_MOUSE_MOVE = 57603
-KEY_MOUSE_NOOP = 61439
-KEY_MOUSE_RDRAG = 57607
-KEY_MOUSE_RDRAG_END = 57609
-KEY_MOUSE_RDRAG_START = 57608
-KEY_MOUSE_RIGHTCLICK = 57345
-KEY_MOUSE_START = 57344
-KEY_MOUSE_WHEEL_DOWN = 57602
-KEY_MOUSE_WHEEL_UP = 57601
-KEY_UNICODE = 61952
-KEY_VKEY = 61440
-KEY_VMOUSE = 61439
-NOTIFICATION_ERROR = 'error'
-NOTIFICATION_INFO = 'info'
-NOTIFICATION_WARNING = 'warning'
-PASSWORD_VERIFY = 1
-VERTICAL = 1
+from xbmc import InfoTagVideo, InfoTagMusic
 
-INT_MAX = 2147483647
+ICON_OVERLAY_NONE = 0
+ICON_OVERLAY_RAR = 0
+ICON_OVERLAY_ZIP = 0
+ICON_OVERLAY_LOCKED = 0
+ICON_OVERLAY_UNWATCHED = 0
+ICON_OVERLAY_WATCHED = 0
+ICON_OVERLAY_HD = 0
+INPUT_TYPE_TEXT = 0
+INPUT_TYPE_NUMBER = 0
+INPUT_TYPE_DATE = 0
+INPUT_TYPE_TIME = 0
+INPUT_TYPE_IPADDRESS = 0
+INPUT_TYPE_PASSWORD = 0
+INPUT_TYPE_PASSWORD_MD5 = 0
+INPUT_TYPE_SECONDS = 0
+INPUT_TYPE_PASSWORD_NUMBER_VERIFY_NEW = 0
+NOTIFICATION_INFO = 0
+NOTIFICATION_WARNING = 0
+NOTIFICATION_ERROR = 0
+INPUT_ALPHANUM = 0
+INPUT_NUMERIC = 0
+INPUT_DATE = 0
+INPUT_TIME = 0
+INPUT_IPADDRESS = 0
+INPUT_PASSWORD = 0
+HORIZONTAL = 0
+VERTICAL = 0
+PASSWORD_VERIFY = 0
+ALPHANUM_HIDE_INPUT = 0
+CONTROL_TEXT_OFFSET_X = 0
+CONTROL_TEXT_OFFSET_Y = 0
+ACTION_NONE = 0
+ACTION_MOVE_LEFT = 0
+ACTION_MOVE_RIGHT = 0
+ACTION_MOVE_UP = 0
+ACTION_MOVE_DOWN = 0
+ACTION_PAGE_UP = 0
+ACTION_PAGE_DOWN = 0
+ACTION_SELECT_ITEM = 0
+ACTION_HIGHLIGHT_ITEM = 0
+ACTION_PARENT_DIR = 0
+ACTION_PREVIOUS_MENU = 0
+ACTION_SHOW_INFO = 0
+ACTION_PAUSE = 0
+ACTION_STOP = 0
+ACTION_NEXT_ITEM = 0
+ACTION_PREV_ITEM = 0
+ACTION_FORWARD = 0
+ACTION_REWIND = 0
+ACTION_SHOW_GUI = 0
+ACTION_ASPECT_RATIO = 0
+ACTION_STEP_FORWARD = 0
+ACTION_STEP_BACK = 0
+ACTION_BIG_STEP_FORWARD = 0
+ACTION_BIG_STEP_BACK = 0
+ACTION_SHOW_OSD = 0
+ACTION_SHOW_SUBTITLES = 0
+ACTION_NEXT_SUBTITLE = 0
+ACTION_BROWSE_SUBTITLE = 0
+ACTION_PLAYER_DEBUG = 0
+ACTION_NEXT_PICTURE = 0
+ACTION_PREV_PICTURE = 0
+ACTION_ZOOM_OUT = 0
+ACTION_ZOOM_IN = 0
+ACTION_TOGGLE_SOURCE_DEST = 0
+ACTION_SHOW_PLAYLIST = 0
+ACTION_QUEUE_ITEM = 0
+ACTION_REMOVE_ITEM = 0
+ACTION_SHOW_FULLSCREEN = 0
+ACTION_ZOOM_LEVEL_NORMAL = 0
+ACTION_ZOOM_LEVEL_1 = 0
+ACTION_ZOOM_LEVEL_2 = 0
+ACTION_ZOOM_LEVEL_3 = 0
+ACTION_ZOOM_LEVEL_4 = 0
+ACTION_ZOOM_LEVEL_5 = 0
+ACTION_ZOOM_LEVEL_6 = 0
+ACTION_ZOOM_LEVEL_7 = 0
+ACTION_ZOOM_LEVEL_8 = 0
+ACTION_ZOOM_LEVEL_9 = 0
+ACTION_CALIBRATE_SWAP_ARROWS = 0
+ACTION_CALIBRATE_RESET = 0
+ACTION_ANALOG_MOVE = 0
+ACTION_ROTATE_PICTURE_CW = 0
+ACTION_ROTATE_PICTURE_CCW = 0
+ACTION_SUBTITLE_DELAY_MIN = 0
+ACTION_SUBTITLE_DELAY_PLUS = 0
+ACTION_AUDIO_DELAY_MIN = 0
+ACTION_AUDIO_DELAY_PLUS = 0
+ACTION_AUDIO_NEXT_LANGUAGE = 0
+ACTION_CHANGE_RESOLUTION = 0
+REMOTE_0 = 0
+REMOTE_1 = 0
+REMOTE_2 = 0
+REMOTE_3 = 0
+REMOTE_4 = 0
+REMOTE_5 = 0
+REMOTE_6 = 0
+REMOTE_7 = 0
+REMOTE_8 = 0
+REMOTE_9 = 0
+ACTION_PLAYER_PROCESS_INFO = 0
+ACTION_PLAYER_PROGRAM_SELECT = 0
+ACTION_PLAYER_RESOLUTION_SELECT = 0
+ACTION_SMALL_STEP_BACK = 0
+ACTION_PLAYER_FORWARD = 0
+ACTION_PLAYER_REWIND = 0
+ACTION_PLAYER_PLAY = 0
+ACTION_DELETE_ITEM = 0
+ACTION_COPY_ITEM = 0
+ACTION_MOVE_ITEM = 0
+ACTION_TAKE_SCREENSHOT = 0
+ACTION_RENAME_ITEM = 0
+ACTION_VOLUME_UP = 0
+ACTION_VOLUME_DOWN = 0
+ACTION_VOLAMP = 0
+ACTION_MUTE = 0
+ACTION_NAV_BACK = 0
+ACTION_VOLAMP_UP = 0
+ACTION_VOLAMP_DOWN = 0
+ACTION_CREATE_EPISODE_BOOKMARK = 0
+ACTION_CREATE_BOOKMARK = 0
+ACTION_CHAPTER_OR_BIG_STEP_FORWARD = 0
+ACTION_CHAPTER_OR_BIG_STEP_BACK = 0
+ACTION_CYCLE_SUBTITLE = 0
+ACTION_MOUSE_START = 0
+ACTION_MOUSE_LEFT_CLICK = 0
+ACTION_MOUSE_RIGHT_CLICK = 0
+ACTION_MOUSE_MIDDLE_CLICK = 0
+ACTION_MOUSE_DOUBLE_CLICK = 0
+ACTION_MOUSE_WHEEL_UP = 0
+ACTION_MOUSE_WHEEL_DOWN = 0
+ACTION_MOUSE_DRAG = 0
+ACTION_MOUSE_MOVE = 0
+ACTION_MOUSE_LONG_CLICK = 0
+ACTION_MOUSE_DRAG_END = 0
+ACTION_MOUSE_END = 0
+ACTION_BACKSPACE = 0
+ACTION_SCROLL_UP = 0
+ACTION_SCROLL_DOWN = 0
+ACTION_ANALOG_FORWARD = 0
+ACTION_ANALOG_REWIND = 0
+ACTION_MOVE_ITEM_UP = 0
+ACTION_MOVE_ITEM_DOWN = 0
+ACTION_CONTEXT_MENU = 0
+ACTION_SHIFT = 0
+ACTION_SYMBOLS = 0
+ACTION_CURSOR_LEFT = 0
+ACTION_CURSOR_RIGHT = 0
+ACTION_BUILT_IN_FUNCTION = 0
+ACTION_SHOW_OSD_TIME = 0
+ACTION_ANALOG_SEEK_FORWARD = 0
+ACTION_ANALOG_SEEK_BACK = 0
+ACTION_VIS_PRESET_SHOW = 0
+ACTION_VIS_PRESET_NEXT = 0
+ACTION_VIS_PRESET_PREV = 0
+ACTION_VIS_PRESET_LOCK = 0
+ACTION_VIS_PRESET_RANDOM = 0
+ACTION_VIS_RATE_PRESET_PLUS = 0
+ACTION_VIS_RATE_PRESET_MINUS = 0
+ACTION_SHOW_VIDEOMENU = 0
+ACTION_ENTER = 0
+ACTION_INCREASE_RATING = 0
+ACTION_DECREASE_RATING = 0
+ACTION_NEXT_SCENE = 0
+ACTION_PREV_SCENE = 0
+ACTION_NEXT_LETTER = 0
+ACTION_PREV_LETTER = 0
+ACTION_JUMP_SMS2 = 0
+ACTION_JUMP_SMS3 = 0
+ACTION_JUMP_SMS4 = 0
+ACTION_JUMP_SMS5 = 0
+ACTION_JUMP_SMS6 = 0
+ACTION_JUMP_SMS7 = 0
+ACTION_JUMP_SMS8 = 0
+ACTION_JUMP_SMS9 = 0
+ACTION_FILTER_CLEAR = 0
+ACTION_FILTER_SMS2 = 0
+ACTION_FILTER_SMS3 = 0
+ACTION_FILTER_SMS4 = 0
+ACTION_FILTER_SMS5 = 0
+ACTION_FILTER_SMS6 = 0
+ACTION_FILTER_SMS7 = 0
+ACTION_FILTER_SMS8 = 0
+ACTION_FILTER_SMS9 = 0
+ACTION_FIRST_PAGE = 0
+ACTION_LAST_PAGE = 0
+ACTION_AUDIO_DELAY = 0
+ACTION_SUBTITLE_DELAY = 0
+ACTION_MENU = 0
+ACTION_SET_RATING = 0
+ACTION_RECORD = 0
+ACTION_PASTE = 0
+ACTION_NEXT_CONTROL = 0
+ACTION_PREV_CONTROL = 0
+ACTION_CHANNEL_SWITCH = 0
+ACTION_CHANNEL_UP = 0
+ACTION_CHANNEL_DOWN = 0
+ACTION_NEXT_CHANNELGROUP = 0
+ACTION_PREVIOUS_CHANNELGROUP = 0
+ACTION_PVR_PLAY = 0
+ACTION_PVR_PLAY_TV = 0
+ACTION_PVR_PLAY_RADIO = 0
+ACTION_PVR_SHOW_TIMER_RULE = 0
+ACTION_CHANNEL_NUMBER_SEP = 0
+ACTION_PVR_ANNOUNCE_REMINDERS = 0
+ACTION_TOGGLE_FULLSCREEN = 0
+ACTION_TOGGLE_WATCHED = 0
+ACTION_SCAN_ITEM = 0
+ACTION_TOGGLE_DIGITAL_ANALOG = 0
+ACTION_RELOAD_KEYMAPS = 0
+ACTION_GUIPROFILE_BEGIN = 0
+ACTION_TELETEXT_RED = 0
+ACTION_TELETEXT_GREEN = 0
+ACTION_TELETEXT_YELLOW = 0
+ACTION_TELETEXT_BLUE = 0
+ACTION_INCREASE_PAR = 0
+ACTION_DECREASE_PAR = 0
+ACTION_VSHIFT_UP = 0
+ACTION_VSHIFT_DOWN = 0
+ACTION_PLAYER_PLAYPAUSE = 0
+ACTION_SUBTITLE_VSHIFT_UP = 0
+ACTION_SUBTITLE_VSHIFT_DOWN = 0
+ACTION_SUBTITLE_ALIGN = 0
+ACTION_FILTER = 0
+ACTION_SWITCH_PLAYER = 0
+ACTION_STEREOMODE_NEXT = 0
+ACTION_STEREOMODE_PREVIOUS = 0
+ACTION_STEREOMODE_TOGGLE = 0
+ACTION_STEREOMODE_SELECT = 0
+ACTION_STEREOMODE_TOMONO = 0
+ACTION_STEREOMODE_SET = 0
+ACTION_SETTINGS_RESET = 0
+ACTION_SETTINGS_LEVEL_CHANGE = 0
+ACTION_TRIGGER_OSD = 0
+ACTION_INPUT_TEXT = 0
+ACTION_VOLUME_SET = 0
+ACTION_TOGGLE_COMMSKIP = 0
+ACTION_HDR_TOGGLE = 0
+ACTION_PLAYER_RESET = 0
+ACTION_TOGGLE_FONT = 0
+ACTION_VIDEO_NEXT_STREAM = 0
+ACTION_QUEUE_ITEM_NEXT = 0
+ACTION_VOICE_RECOGNIZE = 0
+ACTION_TOUCH_TAP = 0
+ACTION_TOUCH_TAP_TEN = 0
+ACTION_TOUCH_LONGPRESS = 0
+ACTION_TOUCH_LONGPRESS_TEN = 0
+ACTION_GESTURE_NOTIFY = 0
+ACTION_GESTURE_BEGIN = 0
+ACTION_GESTURE_ZOOM = 0
+ACTION_GESTURE_ROTATE = 0
+ACTION_GESTURE_PAN = 0
+ACTION_GESTURE_ABORT = 0
+ACTION_GESTURE_SWIPE_LEFT = 0
+ACTION_GESTURE_SWIPE_LEFT_TEN = 0
+ACTION_GESTURE_SWIPE_RIGHT = 0
+ACTION_GESTURE_SWIPE_RIGHT_TEN = 0
+ACTION_GESTURE_SWIPE_UP = 0
+ACTION_GESTURE_SWIPE_UP_TEN = 0
+ACTION_GESTURE_SWIPE_DOWN = 0
+ACTION_GESTURE_SWIPE_DOWN_TEN = 0
+ACTION_GESTURE_END = 0
+ACTION_ANALOG_MOVE_X_LEFT = 0
+ACTION_ANALOG_MOVE_X_RIGHT = 0
+ACTION_ANALOG_MOVE_Y_UP = 0
+ACTION_ANALOG_MOVE_Y_DOWN = 0
+ACTION_ERROR = 0
+ACTION_NOOP = 0
+KEY_BUTTON_A = 0
+KEY_BUTTON_B = 0
+KEY_BUTTON_X = 0
+KEY_BUTTON_Y = 0
+KEY_BUTTON_BLACK = 0
+KEY_BUTTON_WHITE = 0
+KEY_BUTTON_LEFT_TRIGGER = 0
+KEY_BUTTON_RIGHT_TRIGGER = 0
+KEY_BUTTON_LEFT_THUMB_STICK = 0
+KEY_BUTTON_RIGHT_THUMB_STICK = 0
+KEY_BUTTON_RIGHT_THUMB_STICK_UP = 0
+KEY_BUTTON_RIGHT_THUMB_STICK_DOWN = 0
+KEY_BUTTON_RIGHT_THUMB_STICK_LEFT = 0
+KEY_BUTTON_RIGHT_THUMB_STICK_RIGHT = 0
+KEY_BUTTON_DPAD_UP = 0
+KEY_BUTTON_DPAD_DOWN = 0
+KEY_BUTTON_DPAD_LEFT = 0
+KEY_BUTTON_DPAD_RIGHT = 0
+KEY_BUTTON_START = 0
+KEY_BUTTON_BACK = 0
+KEY_BUTTON_LEFT_THUMB_BUTTON = 0
+KEY_BUTTON_RIGHT_THUMB_BUTTON = 0
+KEY_BUTTON_LEFT_ANALOG_TRIGGER = 0
+KEY_BUTTON_RIGHT_ANALOG_TRIGGER = 0
+KEY_BUTTON_LEFT_THUMB_STICK_UP = 0
+KEY_BUTTON_LEFT_THUMB_STICK_DOWN = 0
+KEY_BUTTON_LEFT_THUMB_STICK_LEFT = 0
+KEY_BUTTON_LEFT_THUMB_STICK_RIGHT = 0
+KEY_VKEY = 0
+KEY_UNICODE = 0
+KEY_VMOUSE = 0
+KEY_MOUSE_START = 0
+KEY_MOUSE_CLICK = 0
+KEY_MOUSE_RIGHTCLICK = 0
+KEY_MOUSE_MIDDLECLICK = 0
+KEY_MOUSE_DOUBLE_CLICK = 0
+KEY_MOUSE_LONG_CLICK = 0
+KEY_MOUSE_WHEEL_UP = 0
+KEY_MOUSE_WHEEL_DOWN = 0
+KEY_MOUSE_MOVE = 0
+KEY_MOUSE_DRAG = 0
+KEY_MOUSE_DRAG_START = 0
+KEY_MOUSE_DRAG_END = 0
+KEY_MOUSE_RDRAG = 0
+KEY_MOUSE_RDRAG_START = 0
+KEY_MOUSE_RDRAG_END = 0
+KEY_MOUSE_NOOP = 0
+KEY_MOUSE_END = 0
+KEY_APPCOMMAND = 0
+KEY_INVALID = 0
+ICON_TYPE_NONE = 0
+ICON_TYPE_PROGRAMS = 0
+ICON_TYPE_MUSIC = 0
+ICON_TYPE_PICTURES = 0
+ICON_TYPE_VIDEOS = 0
+ICON_TYPE_FILES = 0
+ICON_TYPE_WEATHER = 0
+ICON_TYPE_SETTINGS = 0
 
 
 class Control:
@@ -217,6 +348,8 @@ class Control:
     **Code based skin access.**
 
     Offers classes and functions that manipulate the add-on gui controls.
+
+    \python_class{ Control() }
 
     **Code based skin access.**
 
@@ -237,7 +370,7 @@ class Control:
     
     def getId(self) -> int:
         """
-        Returns the control's current id as an integer.
+        \python_func{`getId()` } Returns the control's current id as an integer.
 
         :return: int - Current id
 
@@ -251,7 +384,7 @@ class Control:
     
     def getX(self) -> int:
         """
-        Returns the control's current X position.
+        \python_func{`getX()` } Returns the control's current X position.
 
         :return: int - Current X position
 
@@ -265,7 +398,7 @@ class Control:
     
     def getY(self) -> int:
         """
-        Returns the control's current Y position.
+        \python_func{`getY()` } Returns the control's current Y position.
 
         :return: int - Current Y position
 
@@ -279,7 +412,7 @@ class Control:
     
     def getHeight(self) -> int:
         """
-        Returns the control's current height as an integer.
+        \python_func{`getHeight()` } Returns the control's current height as an integer.
 
         :return: int - Current height
 
@@ -293,7 +426,7 @@ class Control:
     
     def getWidth(self) -> int:
         """
-        Returns the control's current width as an integer.
+        \python_func{`getWidth()` } Returns the control's current width as an integer.
 
         :return: int - Current width
 
@@ -307,7 +440,7 @@ class Control:
     
     def setEnabled(self, enabled: bool) -> None:
         """
-        Set's the control's enabled/disabled state.
+        \python_func{ setEnabled(enabled) } Set's the control's enabled/disabled state.
 
         :param enabled: bool - True=enabled / False=disabled.
 
@@ -321,7 +454,7 @@ class Control:
     
     def setVisible(self, visible: bool) -> None:
         """
-        Set's the control's visible/hidden state.
+        \python_func{ setVisible(visible) } Set's the control's visible/hidden state.
 
         :param visible: bool - True=visible / False=hidden.
 
@@ -335,9 +468,9 @@ class Control:
     
     def isVisible(self) -> bool:
         """
-        Get the control's visible/hidden state.
+        \python_func{`isVisible()` } Get the control's visible/hidden state.
 
-          New function added.
+         @python_v18 New function added.
 
         Example::
 
@@ -350,7 +483,8 @@ class Control:
     def setVisibleCondition(self, visible: str,
                             allowHiddenFocus: bool = False) -> None:
         """
-        Set's the control's visible condition.
+        \python_func{ setVisibleCondition(visible[,allowHiddenFocus]) } Set's the
+        control's visible condition.
 
         Allows Kodi to control the visible status of the control.
 
@@ -370,7 +504,8 @@ class Control:
     
     def setEnableCondition(self, enable: str) -> None:
         """
-        Set's the control's enabled condition.
+        \python_func{ setEnableCondition(enable) } Set's the control's enabled
+        condition.
 
         Allows Kodi to control the enabled status of the control.
 
@@ -389,7 +524,7 @@ class Control:
     
     def setAnimations(self, eventAttr: List[Tuple[str, str]]) -> None:
         """
-        Set's the control's animations.
+        \python_func{ setAnimations([(event, attr,)*]) } Set's the control's animations.
 
         **[(event,attr,)*]**: list - A list of tuples consisting of event and attributes
         pairs.
@@ -410,7 +545,7 @@ class Control:
     
     def setPosition(self, x: int, y: int) -> None:
         """
-        Set's the controls position.
+        \python_func{ setPosition(x, y) } Set's the controls position.
 
         :param x: integer - x coordinate of control.
         :param y: integer - y coordinate of control.
@@ -428,7 +563,7 @@ class Control:
     
     def setWidth(self, width: int) -> None:
         """
-        Set's the controls width.
+        \python_func{ setWidth(width) } Set's the controls width.
 
         :param width: integer - width of control.
 
@@ -442,7 +577,7 @@ class Control:
     
     def setHeight(self, height: int) -> None:
         """
-        Set's the controls height.
+        \python_func{ setHeight(height) } Set's the controls height.
 
         :param height: integer - height of control.
 
@@ -459,7 +594,8 @@ class Control:
                       left: 'Control',
                       right: 'Control') -> None:
         """
-        Set's the controls navigation.
+        \python_func{ setNavigation(up, down, left, right) } Set's the controls
+        navigation.
 
         :param up: control object - control to navigate to on up.
         :param down: control object - control to navigate to on down.
@@ -483,7 +619,7 @@ class Control:
     
     def controlUp(self, up: 'Control') -> None:
         """
-        Set's the controls up navigation.
+        \python_func{ controlUp(control) } Set's the controls up navigation.
 
         :param control: control object - control to navigate to on up.
         :raises TypeError: if one of the supplied arguments is not a control type.
@@ -503,7 +639,7 @@ class Control:
     
     def controlDown(self, control: 'Control') -> None:
         """
-        Set's the controls down navigation.
+        \python_func{ controlDown(control) } Set's the controls down navigation.
 
         :param control: control object - control to navigate to on down.
         :raises TypeError: if one of the supplied arguments is not a control type.
@@ -523,7 +659,7 @@ class Control:
     
     def controlLeft(self, control: 'Control') -> None:
         """
-        Set's the controls left navigation.
+        \python_func{ controlLeft(control) } Set's the controls left navigation.
 
         :param control: control object - control to navigate to on left.
         :raises TypeError: if one of the supplied arguments is not a control type.
@@ -543,7 +679,7 @@ class Control:
     
     def controlRight(self, control: 'Control') -> None:
         """
-        Set's the controls right navigation.
+        \python_func{ controlRight(control) } Set's the controls right navigation.
 
         :param control: control object - control to navigate to on right.
         :raises TypeError: if one of the supplied arguments is not a control type.
@@ -568,6 +704,8 @@ class ControlSpin(Control):
 
     Offers classes and functions that manipulate the add-on gui controls.
 
+    \python_class{ ControlSpin() }
+
     **Code based skin access.**
 
     The spin control is used for when a list of options can be chosen (such as a
@@ -591,7 +729,8 @@ class ControlSpin(Control):
                     upDisabled: str,
                     downDisabled: str) -> None:
         """
-        Set's textures for this control.
+        \python_func{ setTextures(up, down, upFocus, downFocus) } Set's textures for
+        this control.
 
         Texture are image files that are used for example in the skin
 
@@ -618,8 +757,8 @@ class ControlLabel(Control):
     """
     **Used to show some lines of text.**
 
-    {`ControlLabel`(x, y, width, height, label[, font, textColor, disabledColor,
-    alignment, hasPath, angle]) }
+    \python_class{`ControlLabel`(x, y, width, height, label[, font, textColor,
+    disabledColor, alignment, hasPath, angle]) }
 
     The label control is used for displaying text in Kodi. You can choose the font,
     size, colour, location and contents of the text to be displayed.
@@ -676,7 +815,7 @@ class ControlLabel(Control):
     
     def getLabel(self) -> str:
         """
-        Returns the text value for this label.
+        \python_func{`getLabel()` } Returns the text value for this label.
 
         :return: This label
 
@@ -696,7 +835,8 @@ class ControlLabel(Control):
                  focusedColor: Optional[str] = None,
                  label2: str = "") -> None:
         """
-        Set's text for this label.
+        \python_func{ setLabel(label[, font, textColor, disabledColor, shadowColor,
+        focusedColor, label2]) } Set's text for this label.
 
         :param label: string or unicode - text string.
         :param font: [opt] string - font used for label text. (e.g. 'font13')
@@ -720,8 +860,8 @@ class ControlEdit(Control):
     """
     **Used as an input control for the osd keyboard and other input fields.**
 
-    {`ControlEdit`(x, y, width, height, label[, font, textColor, disabledColor,
-    alignment, focusTexture, noFocusTexture]) }
+    \python_class{`ControlEdit`(x, y, width, height, label[, font, textColor,
+    disabledColor, alignment, focusTexture, noFocusTexture]) }
 
     The edit control allows a user to input text in Kodi. You can choose the font,
     size, colour, location and header of the text to be displayed.
@@ -760,7 +900,8 @@ class ControlEdit(Control):
         arguments require the keyword.  After you create the control, you
         need to add it to the window with addControl().
 
-      Deprecated **isPassword**  Removed **isPassword**Example::
+     @python_v18 Deprecated **isPassword** @python_v19
+    Removed **isPassword**Example::
 
         ...
         self.edit = xbmcgui.ControlEdit(100, 250, 125, 75, 'Status')
@@ -788,7 +929,8 @@ class ControlEdit(Control):
                  focusedColor: Optional[str] = None,
                  label2: str = "") -> None:
         """
-        Set's text heading for this edit control.
+        \python_func{ setLabel(label[, font, textColor, disabledColor, shadowColor,
+        focusedColor, label2]) } Set's text heading for this edit control.
 
         :param label: string or unicode - text string.
         :param font: [opt] string - font used for label text. (e.g. 'font13')
@@ -809,7 +951,7 @@ class ControlEdit(Control):
     
     def getLabel(self) -> str:
         """
-        Returns the text heading for this edit control.
+        \python_func{`getLabel()` } Returns the text heading for this edit control.
 
         :return: Heading text
 
@@ -823,7 +965,7 @@ class ControlEdit(Control):
     
     def setText(self, text: str) -> None:
         """
-        Set's text value for this edit control.
+        \python_func{ setText(value) } Set's text value for this edit control.
 
         :param value: string or unicode - text string.
 
@@ -837,11 +979,11 @@ class ControlEdit(Control):
     
     def getText(self) -> str:
         """
-        Returns the text value for this edit control.
+        \python_func{`getText()` } Returns the text value for this edit control.
 
         :return: Text value of control
 
-          New function added.Example::
+         @python_v14 New function added.Example::
 
             ...
             value = self.edit.getText()
@@ -851,26 +993,28 @@ class ControlEdit(Control):
     
     def setType(self, type: int, heading: str) -> None:
         """
-        Sets the type of this edit control.
+        \python_func{ setType(type, heading) } Sets the type of this edit control.
 
         :param type: integer - type of the edit control.
 
-        =============================== =========================================== 
-        Param                           Definition                                  
-        =============================== =========================================== 
-        xbmcgui.INPUT_TYPE_TEXT         (standard keyboard)                         
-        xbmcgui.INPUT_TYPE_NUMBER       (format: #)                                 
-        xbmcgui.INPUT_TYPE_DATE         (format: DD/MM/YYYY)                        
-        xbmcgui.INPUT_TYPE_TIME         (format: HH:MM)                             
-        xbmcgui.INPUT_TYPE_IPADDRESS    (format: #.#.#.#)                           
-        xbmcgui.INPUT_TYPE_PASSWORD     (input is masked)                           
-        xbmcgui.INPUT_TYPE_PASSWORD_MD5 (input is masked, return md5 hash of input) 
-        xbmcgui.INPUT_TYPE_SECONDS      (format: SS or MM:SS or HH:MM:SS or MM min) 
-        =============================== =========================================== 
+        ============================================= =========================================== 
+        Param                                         Definition                                  
+        ============================================= =========================================== 
+        xbmcgui.INPUT_TYPE_TEXT                       (standard keyboard)                         
+        xbmcgui.INPUT_TYPE_NUMBER                     (format: #)                                 
+        xbmcgui.INPUT_TYPE_DATE                       (format: DD/MM/YYYY)                        
+        xbmcgui.INPUT_TYPE_TIME                       (format: HH:MM)                             
+        xbmcgui.INPUT_TYPE_IPADDRESS                  (format: #.#.#.#)                           
+        xbmcgui.INPUT_TYPE_PASSWORD                   (input is masked)                           
+        xbmcgui.INPUT_TYPE_PASSWORD_MD5               (input is masked, return md5 hash of input) 
+        xbmcgui.INPUT_TYPE_SECONDS                    (format: SS or MM:SS or HH:MM:SS or MM min) 
+        xbmcgui.INPUT_TYPE_PASSWORD_NUMBER_VERIFY_NEW (numeric input is masked)                   
+        ============================================= =========================================== 
 
         :param heading: string or unicode - heading that will be used for to numeric or
             keyboard dialog when the edit control is clicked.
-          New function added.Example::
+         @python_v18 New function added. @python_v19 New option added to mask
+        numeric input.Example::
 
             ...
             self.edit.setType(xbmcgui.INPUT_TYPE_TIME, 'Please enter the time')
@@ -883,9 +1027,9 @@ class ControlList(Control):
     """
     **Used for a scrolling lists of items. Replaces the list control.**
 
-    {`ControlList`(x, y, width, height[, font, textColor, buttonTexture,
-    buttonFocusTexture, selectedColor, imageWidth, imageHeight, itemTextXOffset,
-    itemTextYOffset, itemHeight, space, alignmentY, shadowColor]) }
+    \python_class{`ControlList`(x, y, width, height[, font, textColor,
+    buttonTexture, buttonFocusTexture, selectedColor, imageWidth, imageHeight,
+    itemTextXOffset, itemTextYOffset, itemHeight, space, alignmentY, shadowColor]) }
 
     The list container is one of several containers used to display items from file
     lists in various ways. The list container is very flexible - it's only
@@ -960,7 +1104,7 @@ class ControlList(Control):
     def addItem(self, item: Union[str, 'ListItem'],
                 sendMessage: bool = True) -> None:
         """
-        Add a new item to this list control.
+        \python_func{ addItem(item) } Add a new item to this list control.
 
         :param item: string, unicode or `ListItem` - item to add.
 
@@ -974,7 +1118,8 @@ class ControlList(Control):
     
     def addItems(self, items: List[Union[str, 'ListItem']]) -> None:
         """
-        Adds a list of listitems or strings to this list control.
+        \python_func{ addItems(items) } Adds a list of listitems or strings to this list
+        control.
 
         :param items: `List` - list of strings, unicode objects or ListItems to add.
 
@@ -991,7 +1136,7 @@ class ControlList(Control):
     
     def selectItem(self, item: int) -> None:
         """
-        Select an item by index number.
+        \python_func{ selectItem(item) } Select an item by index number.
 
         :param item: integer - index number of the item to select.
 
@@ -1005,10 +1150,10 @@ class ControlList(Control):
     
     def removeItem(self, index: int) -> None:
         """
-        Remove an item by index number.
+        \python_func{ removeItem(index) } Remove an item by index number.
 
         :param index: integer - index number of the item to remove.
-          New function added.Example::
+         @python_v13 New function added.Example::
 
             ...
             cList.removeItem(12)
@@ -1018,7 +1163,7 @@ class ControlList(Control):
     
     def reset(self) -> None:
         """
-        Clear all ListItems in this control list.
+        \python_func{`reset()` } Clear all ListItems in this control list.
 
         Calling```reset()``` will destroy any```ListItem``` objects in
         the```ControlList``` if not hold by any other class. Make sure you you don't
@@ -1055,7 +1200,7 @@ class ControlList(Control):
     
     def getSpinControl(self) -> Control:
         """
-        Returns the associated `ControlSpin` object.
+        \python_func{`getSpinControl()` } Returns the associated `ControlSpin` object.
 
         Not working completely yet  After adding this control list to a window it is not
         possible to change the settings of this spin control.
@@ -1070,7 +1215,8 @@ class ControlList(Control):
     
     def getSelectedPosition(self) -> int:
         """
-        Returns the position of the selected item as an integer.
+        \python_func{`getSelectedPosition()` } Returns the position of the selected item
+        as an integer.
 
         .. note::
             Returns -1 for empty lists.
@@ -1085,7 +1231,8 @@ class ControlList(Control):
     
     def getSelectedItem(self) -> 'ListItem':
         """
-        Returns the selected item as a `ListItem` object.
+        \python_func{`getSelectedItem()` } Returns the selected item as a `ListItem`
+        object.
 
         :return: The selected item
 
@@ -1104,7 +1251,8 @@ class ControlList(Control):
     
     def setImageDimensions(self, imageWidth: int, imageHeight: int) -> None:
         """
-        Sets the width/height of items icon or thumbnail.
+        \python_func{ setImageDimensions(imageWidth, imageHeight) } Sets the
+        width/height of items icon or thumbnail.
 
         :param imageWidth: [opt] integer - width of items icon or thumbnail.
         :param imageHeight: [opt] integer - height of items icon or thumbnail.
@@ -1119,7 +1267,7 @@ class ControlList(Control):
     
     def setSpace(self, space: int) -> None:
         """
-        Set's the space between items.
+        \python_func{ setSpace(space) } Set's the space between items.
 
         :param space: [opt] integer - space between items.
 
@@ -1133,7 +1281,8 @@ class ControlList(Control):
     
     def setPageControlVisible(self, visible: bool) -> None:
         """
-        Sets the spin control's visible/hidden state.
+        \python_func{ setPageControlVisible(visible) } Sets the spin control's
+        visible/hidden state.
 
         :param visible: boolean - True=visible / False=hidden.
 
@@ -1147,7 +1296,8 @@ class ControlList(Control):
     
     def size(self) -> int:
         """
-        Returns the total number of items in this list control as an integer.
+        \python_func{`size()` } Returns the total number of items in this list control
+        as an integer.
 
         :return: Total number of items
 
@@ -1161,7 +1311,8 @@ class ControlList(Control):
     
     def getItemHeight(self) -> int:
         """
-        Returns the control's current item height as an integer.
+        \python_func{`getItemHeight()` } Returns the control's current item height as an
+        integer.
 
         :return: Current item heigh
 
@@ -1175,7 +1326,8 @@ class ControlList(Control):
     
     def getSpace(self) -> int:
         """
-        Returns the control's space between items as an integer.
+        \python_func{`getSpace()` } Returns the control's space between items as an
+        integer.
 
         :return: Space between items
 
@@ -1189,7 +1341,7 @@ class ControlList(Control):
     
     def getListItem(self, index: int) -> 'ListItem':
         """
-        Returns a given `ListItem` in this `List`.
+        \python_func{ getListItem(index) } Returns a given `ListItem` in this `List`.
 
         :param index: integer - index number of item to return.
         :return: `List` item
@@ -1206,7 +1358,8 @@ class ControlList(Control):
     
     def setStaticContent(self, items: List['ListItem']) -> None:
         """
-        Fills a static list with a list of listitems.
+        \python_func{ setStaticContent(items) } Fills a static list with a list of
+        listitems.
 
         :param items: `List` - list of listitems to add.
 
@@ -1226,6 +1379,9 @@ class ControlFadeLabel(Control):
     """
     **Used to show multiple pieces of text in the same position, by fading from one
     to the other.**
+
+    \python_class{ ControlFadeLabel(x, y, width, height[, font, textColor,
+    alignment]) }
 
     The fade label control is used for displaying multiple pieces of text in the
     same space in Kodi. You can choose the font, size, colour, location and contents
@@ -1281,7 +1437,7 @@ class ControlFadeLabel(Control):
     
     def addLabel(self, label: str) -> None:
         """
-        Add a label to this control for scrolling.
+        \python_func{ addLabel(label) } Add a label to this control for scrolling.
 
         :param label: string or unicode - text string to add.
 
@@ -1298,7 +1454,8 @@ class ControlFadeLabel(Control):
     
     def setScrolling(self, scroll: bool) -> None:
         """
-        Set scrolling. If set to false, the labels won't scroll. Defaults to true.
+        \python_func{ setScrolling(scroll) } Set scrolling. If set to false, the labels
+        won't scroll. Defaults to true.
 
         :param scroll: boolean - True = enabled / False = disabled
 
@@ -1314,6 +1471,8 @@ class ControlFadeLabel(Control):
 class ControlTextBox(Control):
     """
     **Used to show a multi-page piece of text.**
+
+    \python_class{ ControlTextBox(x, y, width, height[, font, textColor]) }
 
     The text box is used for showing a large multipage piece of text in Kodi. You
     can choose the position, size, and look of the text.
@@ -1340,6 +1499,19 @@ class ControlTextBox(Control):
         # ControlTextBox(x, y, width, height[, font, textColor])
         self.textbox = xbmcgui.ControlTextBox(100, 250, 300, 300, textColor='0xFFFFFFFF')
         ...
+    As stated above, the GUI control is only created once added to a window. The
+    example below shows how a `ControlTextBox` can be created, added to the current
+    window and have some of its properties changed.
+
+    ///**Extended example:**
+
+        ...
+        textbox = xbmcgui.ControlTextBox(100, 250, 300, 300, textColor='0xFFFFFFFF')
+        window = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+        window.addControl(textbox)
+        textbox.setText("My Text Box")
+        textbox.scroll()
+        ...
     """
     
     def __init__(self, x: int,
@@ -1352,9 +1524,12 @@ class ControlTextBox(Control):
     
     def setText(self, text: str) -> None:
         """
-        Set's the text for this textbox.
+        \python_func{ setText(text) } Set's the text for this textbox.
 
-        :param text: string or unicode - text string.
+        :param text: string - text string.
+
+        .. note::
+            setText only has effect after the control is added to a window
 
         Example::
 
@@ -1367,9 +1542,13 @@ class ControlTextBox(Control):
     
     def getText(self) -> str:
         """
-        Returns the text value for this textbox.
+        \python_func{`getText()` } Returns the text value for this textbox.
 
         :return: To get text from box
+
+        .. note::
+            getText only works after you add the control to a window and set
+            the control text (using `setText`).
 
         Example::
 
@@ -1382,7 +1561,10 @@ class ControlTextBox(Control):
     
     def reset(self) -> None:
         """
-        Clear's this textbox.
+        \python_func{`reset()` } Clear's this textbox.
+
+        .. note::
+            reset only works after you add the control to a window.
 
         Example::
 
@@ -1395,9 +1577,12 @@ class ControlTextBox(Control):
     
     def scroll(self, id: int) -> None:
         """
-        Scrolls to the given position.
+        \python_func{ scroll(id) } Scrolls to the given position.
 
         :param id: integer - position to scroll to.
+
+        .. note::
+            `scroll()` only works after the control is added to a window.
 
         Example::
 
@@ -1410,12 +1595,16 @@ class ControlTextBox(Control):
     
     def autoScroll(self, delay: int, time: int, repeat: int) -> None:
         """
-        Set autoscrolling times.
+        \python_func{ autoScroll(delay, time, repeat) } Set autoscrolling times.
 
         :param delay: integer - Scroll delay (in ms)
         :param time: integer - Scroll time (in ms)
         :param repeat: integer - Repeat time
-          New function added.Example::
+
+        .. note::
+            autoScroll only works after you add the control to a window.
+
+         @python_v15 New function added.Example::
 
             ...
             self.textbox.autoScroll(1, 2, 1)
@@ -1427,6 +1616,9 @@ class ControlTextBox(Control):
 class ControlImage(Control):
     """
     **Used to show an image.**
+
+    \python_class{ ControlImage(x, y, width, height, filename[, aspectRatio,
+    colorDiffuse]) }
 
     The image control is used for displaying images in Kodi. You can choose the
     position, size, transparency and contents of the image to be displayed.
@@ -1468,11 +1660,11 @@ class ControlImage(Control):
     
     def setImage(self, imageFilename: str, useCache: bool = True) -> None:
         """
-        Changes the image.
+        \python_func{ setImage(filename[, useCache]) } Changes the image.
 
         :param filename: string - image filename.
         :param useCache: [opt] bool - True=use cache (default) / False=don't use cache.
-          Added new option **useCache**.Example::
+         @python_v13 Added new option **useCache**.Example::
 
             ...
             # setImage(filename[, useCache])
@@ -1484,7 +1676,7 @@ class ControlImage(Control):
     
     def setColorDiffuse(self, hexString: str) -> None:
         """
-        Changes the images color.
+        \python_func{ setColorDiffuse(colorDiffuse) } Changes the images color.
 
         :param colorDiffuse: hexString - (example, '0xC0FF0000' (red tint))
 
@@ -1502,8 +1694,8 @@ class ControlProgress(Control):
     """
     **Used to show the progress of a particular operation.**
 
-    { ControlProgress(x, y, width, height, filename[, texturebg, textureleft,
-    texturemid, textureright, textureoverlay]) }
+    \python_class{ ControlProgress(x, y, width, height, filename[, texturebg,
+    textureleft, texturemid, textureright, textureoverlay]) }
 
     The progress control is used to show the progress of an item that may take a
     long time, or to show how far through a movie you are. You can choose the
@@ -1563,7 +1755,8 @@ class ControlProgress(Control):
     
     def setPercent(self, pct: float) -> None:
         """
-        Sets the percentage of the progressbar to show.
+        \python_func{ setPercent(percent) } Sets the percentage of the progressbar to
+        show.
 
         :param percent: float - percentage of the bar to show.
 
@@ -1581,7 +1774,7 @@ class ControlProgress(Control):
     
     def getPercent(self) -> float:
         """
-        Returns a float of the percent of the progress.
+        \python_func{`getPercent()` } Returns a float of the percent of the progress.
 
         :return: Percent position
 
@@ -1599,9 +1792,9 @@ class ControlButton(Control):
     """
     **A standard push button control.**
 
-    {`ControlButton`(x, y, width, height, label[, focusTexture, noFocusTexture,
-    textOffsetX, textOffsetY, alignment, font, textColor, disabledColor, angle,
-    shadowColor, focusedColor]) }
+    \python_class{`ControlButton`(x, y, width, height, label[, focusTexture,
+    noFocusTexture, textOffsetX, textOffsetY, alignment, font, textColor,
+    disabledColor, angle, shadowColor, focusedColor]) }
 
     The button control is used for creating push buttons in Kodi. You can choose the
     position, size, and look of the button, as well as choosing what action(s)
@@ -1683,7 +1876,8 @@ class ControlButton(Control):
                  focusedColor: Optional[str] = None,
                  label2: str = "") -> None:
         """
-        Set's this buttons text attributes.
+        \python_func{ setLabel([label, font, textColor, disabledColor, shadowColor,
+        focusedColor, label2]) } Set's this buttons text attributes.
 
         :param label: [opt] string or unicode - text string.
         :param font: [opt] string - font used for label text. (e.g. 'font13')
@@ -1711,7 +1905,8 @@ class ControlButton(Control):
     
     def setDisabledColor(self, color: str) -> None:
         """
-        Set's this buttons disabled color.
+        \python_func{ setDisabledColor(disabledColor) } Set's this buttons disabled
+        color.
 
         :param disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
 
@@ -1726,7 +1921,7 @@ class ControlButton(Control):
     
     def getLabel(self) -> str:
         """
-        Returns the buttons label as a unicode string.
+        \python_func{`getLabel()` } Returns the buttons label as a unicode string.
 
         :return: Unicode string
 
@@ -1741,9 +1936,9 @@ class ControlButton(Control):
     
     def getLabel2(self) -> str:
         """
-        Returns the buttons label2 as a unicode string.
+        \python_func{`getLabel2()` } Returns the buttons label2 as a string.
 
-        :return: Unicode string of label 2
+        :return: string of label 2
 
         Example::
 
@@ -1758,6 +1953,8 @@ class ControlButton(Control):
 class ControlGroup(Control):
     """
     **Used to group controls together..**
+
+    \python_class{ ControlGroup(x, y, width, height) }
 
     The group control is one of the most important controls. It allows you to group
     controls together, applying attributes to all of them at once. It also remembers
@@ -1792,7 +1989,7 @@ class ControlRadioButton(Control):
     """
     **For control a radio button (as used for on/off settings).**
 
-    {`ControlRadioButton`(x, y, width, height, label[, focusOnTexture,
+    \python_class{`ControlRadioButton`(x, y, width, height, label[, focusOnTexture,
     noFocusOnTexture, focusOffTexture, noFocusOffTexture, textOffsetX, textOffsetY,
     alignment, font, textColor, disabledColor]) }
 
@@ -1841,8 +2038,9 @@ class ControlRadioButton(Control):
         arguments require the keyword.  After you create the control, you
         need to add it to the window with addControl().
 
-      New function added.  Deprecated **focusTexture**
-    and **noFocusTexture**. Use **focusOnTexture** and **noFocusOnTexture**.
+     @python_v13 New function added. @python_v18
+    Deprecated **focusTexture** and **noFocusTexture**.
+    Use **focusOnTexture** and **noFocusOnTexture**. @python_v19
     Removed **focusTexture** and **noFocusTexture**.Example::
 
         ...
@@ -1874,7 +2072,8 @@ class ControlRadioButton(Control):
     
     def setSelected(self, selected: bool) -> None:
         """
-        **Sets the radio buttons's selected status.**
+        \python_func{ setSelected(selected) }**Sets the radio buttons's selected
+        status.**
 
         :param selected: bool - True=selected (on) / False=not selected (off)
 
@@ -1893,7 +2092,7 @@ class ControlRadioButton(Control):
     
     def isSelected(self) -> bool:
         """
-        Returns the radio buttons's selected status.
+        \python_func{`isSelected()` } Returns the radio buttons's selected status.
 
         :return: True if selected on
 
@@ -1913,7 +2112,8 @@ class ControlRadioButton(Control):
                  focusedColor: Optional[str] = None,
                  label2: str = "") -> None:
         """
-        Set's the radio buttons text attributes.
+        \python_func{ setLabel(label[, font, textColor, disabledColor, shadowColor,
+        focusedColor]) } Set's the radio buttons text attributes.
 
         :param label: string or unicode - text string.
         :param font: [opt] string - font used for label text. (e.g. 'font13')
@@ -1945,7 +2145,8 @@ class ControlRadioButton(Control):
                           width: int,
                           height: int) -> None:
         """
-        Sets the radio buttons's radio texture's position and size.
+        \python_func{ setRadioDimension(x, y, width, height) } Sets the radio buttons's
+        radio texture's position and size.
 
         :param x: integer - x coordinate of radio texture.
         :param y: integer - y coordinate of radio texture.
@@ -1970,8 +2171,8 @@ class ControlSlider(Control):
     """
     **Used for a volume slider.**
 
-    { ControlSlider(x, y, width, height[, textureback, texture, texturefocus,
-    orientation]) }
+    \python_class{ ControlSlider(x, y, width, height[, textureback, texture,
+    texturefocus, orientation]) }
 
     The slider control is used for things where a sliding bar best represents the
     operation at hand (such as a volume control or seek control). You can choose the
@@ -1996,7 +2197,7 @@ class ControlSlider(Control):
         arguments require the keyword.  After you create the control, you
         need to add it to the window with addControl().
 
-    **orientation** option added.Example::
+     @python_v17 **orientation** option added.Example::
 
         ...
         self.slider = xbmcgui.ControlSlider(100, 250, 350, 40)
@@ -2015,7 +2216,7 @@ class ControlSlider(Control):
     
     def getPercent(self) -> float:
         """
-        Returns a float of the percent of the slider.
+        \python_func{`getPercent()` } Returns a float of the percent of the slider.
 
         :return: float - Percent of slider
 
@@ -2029,7 +2230,7 @@ class ControlSlider(Control):
     
     def setPercent(self, pct: float) -> None:
         """
-        Sets the percent of the slider.
+        \python_func{ setPercent(pct) } Sets the percent of the slider.
 
         :param pct: float - Percent value of slider
 
@@ -2043,11 +2244,11 @@ class ControlSlider(Control):
     
     def getInt(self) -> int:
         """
-        Returns the value of the slider.
+        \python_func{`getInt()` } Returns the value of the slider.
 
         :return: int - value of slider
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ...
             print(self.slider.getInt())
@@ -2057,13 +2258,14 @@ class ControlSlider(Control):
     
     def setInt(self, value: int, min: int, delta: int, max: int) -> None:
         """
-        Sets the range, value and step size of the slider.
+        \python_func{ setInt(value, min, delta, max) } Sets the range, value and step
+        size of the slider.
 
         :param value: int - value of slider
         :param min: int - min of slider
         :param delta: int - step size of slider
         :param max: int - max of slider
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ...
             self.slider.setInt(450, 200, 10, 900)
@@ -2073,11 +2275,11 @@ class ControlSlider(Control):
     
     def getFloat(self) -> float:
         """
-        Returns the value of the slider.
+        \python_func{`getFloat()` } Returns the value of the slider.
 
         :return: float - value of slider
 
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ...
             print(self.slider.getFloat())
@@ -2090,13 +2292,14 @@ class ControlSlider(Control):
                  delta: float,
                  max: float) -> None:
         """
-        Sets the range, value and step size of the slider.
+        \python_func{ setFloat(value, min, delta, max) } Sets the range, value and step
+        size of the slider.
 
         :param value: float - value of slider
         :param min: float - min of slider
         :param delta: float - step size of slider
         :param max: float - max of slider
-          New function added.Example::
+         @python_v18 New function added.Example::
 
             ...
             self.slider.setFloat(15.0, 10.0, 1.0, 20.0)
@@ -2124,7 +2327,8 @@ class Dialog:
               customlabel: str = "",
               autoclose: int = 0) -> bool:
         """
-        **Yes / no dialog **
+        \python_func{ xbmcgui.Dialog().yesno(heading, message, nolabel, yeslabel,
+        customlabel, autoclose]) }**Yes / no dialog **
 
         The Yes / No dialog can be used to inform the user about questions and get the
         answer.
@@ -2138,9 +2342,10 @@ class Dialog:
             autoclose)
         :return: Returns True if 'Yes' was pressed, else False.
 
-          Added new option**autoclose **.  Renamed option**line1 **
-        to**message **.  Removed option**line2 **.  Removed option**line3 **.
-        Added new option**customlabel**.Example::
+         @python_v13 Added new option**autoclose **. @python_v19 Renamed
+        option**line1 ** to**message **. @python_v19 Removed option**line2 **.
+        @python_v19 Removed option**line3 **. @python_v19 Added new
+        option**customlabel**.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2151,14 +2356,14 @@ class Dialog:
     
     def info(self, item: 'ListItem') -> bool:
         """
-        **Info dialog**
+        \python_func{ xbmcgui.Dialog().info(listitem) }**Info dialog**
 
         Show the corresponding info dialog for a given listitem
 
         :param listitem: `xbmcgui.ListItem` -`ListItem` to show info for.
         :return: Returns whether the dialog opened successfully.
 
-          New function added.Example::
+         @python_v17 New function added.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2173,7 +2378,8 @@ class Dialog:
                preselect: int = -1,
                useDetails: bool = False) -> int:
         """
-        **Select dialog **
+        \python_func{ xbmcgui.Dialog().select(heading, list[, autoclose, preselect,
+        useDetails]) }**Select dialog **
 
         Show of a dialog to select of an entry as a key
 
@@ -2187,8 +2393,9 @@ class Dialog:
             (default=false)
         :return: Returns the position of the highlighted item as an integer.
 
-        **preselect ** option added.  Added new option**useDetails **.  Allow
-        listitems for parameter**list**Example::
+         @python_v17**preselect ** option added. @python_v17 Added new
+        option**useDetails **. @python_v17 Allow listitems for
+        parameter**list**Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2199,12 +2406,12 @@ class Dialog:
     
     def contextmenu(self, list: List[str]) -> int:
         """
-        Show a context menu.
+        \python_func{ xbmcgui.Dialog().contextmenu(list) } Show a context menu.
 
         :param list: string list - list of items.
         :return: the position of the highlighted item as an integer (-1 if cancelled).
 
-          New function addedExample::
+         @python_v17 New function addedExample::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2219,7 +2426,8 @@ class Dialog:
                     preselect: Optional[List[int]] = None,
                     useDetails: bool = False) -> List[int]:
         """
-        Show a multi-select dialog.
+        \python_func{ xbmcgui.Dialog().multiselect(heading, options[, autoclose,
+        preselect, useDetails]) } Show a multi-select dialog.
 
         :param heading: string or unicode - dialog heading.
         :param options: list of strings / xbmcgui.ListItems - options to choose from.
@@ -2231,8 +2439,9 @@ class Dialog:
             (default=false)
         :return: Returns the selected items as a list of indices, or None if cancelled.
 
-          New function added.  Added new option **preselect**.  Added new
-        option **useDetails**.  Allow listitems for parameter **options**Example::
+         @python_v16 New function added. @python_v17 Added new
+        option **preselect**. @python_v17 Added new option **useDetails**.
+        @python_v17 Allow listitems for parameter **options**Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2243,7 +2452,7 @@ class Dialog:
     
     def ok(self, heading: str, message: str) -> bool:
         """
-        **OK dialog **
+        \python_func{ xbmcgui.Dialog().ok(heading, message) }**OK dialog **
 
         The functions permit the call of a dialog of information, a confirmation of the
         user by press from OK required.
@@ -2252,8 +2461,8 @@ class Dialog:
         :param message: string or unicode - message text.
         :return: Returns True if 'Ok' was pressed, else False.
 
-          Renamed option**line1 ** to**message **.  Removed option**line2 **.
-        Removed option**line3**.Example::
+         @python_v19 Renamed option**line1 ** to**message **. @python_v19
+        Removed option**line2 **. @python_v19 Removed option**line3**.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2266,7 +2475,8 @@ class Dialog:
                    text: str,
                    usemono: bool = False) -> None:
         """
-        **TextViewer dialog **
+        \python_func{ xbmcgui.Dialog().textviewer(heading, text, usemono) }**TextViewer
+        dialog **
 
         The text viewer dialog can be used to display descriptions, help texts or other
         larger texts.
@@ -2274,7 +2484,8 @@ class Dialog:
         :param heading: string or unicode - dialog heading.
         :param text: string or unicode - text.
         :param usemono: [opt] bool - use monospace font
-          New function added.  New optional param added**usemono**.Example::
+         @python_v16 New function added. @python_v18 New optional param
+        added**usemono**.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2292,7 +2503,8 @@ class Dialog:
                defaultt: str = "",
                enableMultiple: bool = False) -> Union[str, List[str]]:
         """
-        **Browser dialog**
+        \python_func{ xbmcgui.Dialog().browse(type, heading, shares[, mask, useThumbs,
+        treatAsFolder, defaultt, enableMultiple]) }**Browser dialog**
 
         The function offer the possibility to select a file by the user of the add-on.
 
@@ -2335,7 +2547,7 @@ class Dialog:
 
          If type is 0 or 3 the enableMultiple parameter is ignore
 
-          New option added to browse network and/or local drives.Example::
+         @python_v18 New option added to browse network and/or local drives.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2352,7 +2564,8 @@ class Dialog:
                      treatAsFolder: bool = False,
                      defaultt: str = "") -> str:
         """
-        **Browse single dialog**
+        \python_func{ xbmcgui.Dialog().browseSingle(type, heading, shares[, mask,
+        useThumbs, treatAsFolder, defaultt]) }**Browse single dialog**
 
         The function offer the possibility to select a file by the user of the add-on.
 
@@ -2394,7 +2607,7 @@ class Dialog:
         :param defaultt: [opt] string - default path or file.
         :return: Returns filename and/or path as a string to the location of the highlighted item, if user pressed 'Ok' or a masked item was selected. Returns the default value if dialog was canceled.
 
-          New option added to browse network and/or local drives.Example::
+         @python_v18 New option added to browse network and/or local drives.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2411,7 +2624,8 @@ class Dialog:
                        treatAsFolder: bool = False,
                        defaultt: str = "") -> List[str]:
         """
-        **Browser dialog**
+        \python_func{ xbmcgui.Dialog().browseMultiple(type, heading, shares[, mask,
+        useThumbs, treatAsFolder, defaultt]) }**Browser dialog**
 
         The function offer the possibility to select multiple files by the user of the
         add-on.
@@ -2452,7 +2666,7 @@ class Dialog:
         :param defaultt: [opt] string - default path or file.
         :return: Returns tuple of marked filenames as a string," if user pressed 'Ok' or a masked item was selected. Returns empty tuple if dialog was canceled.
 
-          New option added to browse network and/or local drives.Example::
+         @python_v18 New option added to browse network and/or local drives.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2466,27 +2680,31 @@ class Dialog:
                 defaultt: str = "",
                 bHiddenInput: bool = False) -> str:
         """
-        **Numeric dialog**
+        \python_func{ xbmcgui.Dialog().numeric(type, heading[, defaultt, bHiddenInput])
+        }**Numeric dialog**
 
         The function have to be permitted by the user for the representation of a
         numeric keyboard around an input.
 
         :param type: integer - the type of numeric dialog.
 
-        ===== =================== ============================ 
-        Param Name                Format                       
-        ===== =================== ============================ 
-        0     ShowAndGetNumber    (default format: #)          
-        1     ShowAndGetDate      (default format: DD/MM/YYYY) 
-        2     ShowAndGetTime      (default format: HH:MM)      
-        3     ShowAndGetIPAddress (default format: #.#.#.#)    
-        ===== =================== ============================ 
+        ===== ======================== ============================ 
+        Param Name                     Format                       
+        ===== ======================== ============================ 
+        0     ShowAndGetNumber         (default format: #)          
+        1     ShowAndGetDate           (default format: DD/MM/YYYY) 
+        2     ShowAndGetTime           (default format: HH:MM)      
+        3     ShowAndGetIPAddress      (default format: #.#.#.#)    
+        4     ShowAndVerifyNewPassword (default format: *)          
+        ===== ======================== ============================ 
 
-        :param heading: string or unicode - dialog heading.
+        :param heading: string or unicode - dialog heading (will be ignored for type 4).
         :param defaultt: [opt] string - default value.
+        :param bHiddenInput: [opt] bool - mask input (available for type 0).
         :return: Returns the entered data as a string. Returns the default value if dialog was canceled.
 
-        Example::
+         @python_v19 New option added ShowAndVerifyNewPassword. @python_v19
+        Added new option **bHiddenInput**.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2501,7 +2719,8 @@ class Dialog:
                      time: int = 0,
                      sound: bool = True) -> None:
         """
-        Show a Notification alert.
+        \python_func{ xbmcgui.Dialog().notification(heading, message[, icon, time,
+        sound]) } Show a Notification alert.
 
         :param heading: string - dialog heading.
         :param message: string - dialog message.
@@ -2515,7 +2734,7 @@ class Dialog:
 
         xbmcgui.NOTIFICATION_ERROR
 
-          New function added.
+         @python_v13 New function added.
 
         Example::
 
@@ -2532,7 +2751,8 @@ class Dialog:
               option: int = 0,
               autoclose: int = 0) -> str:
         """
-        Show an Input dialog.
+        \python_func{ xbmcgui.Dialog().input(heading[, defaultt, type, option,
+        autoclose]) } Show an Input dialog.
 
         :param heading: string - dialog heading.
         :param defaultt: [opt] string - default value. (default=empty string)
@@ -2558,7 +2778,7 @@ class Dialog:
             autoclose)
         :return: Returns the entered data as a string. Returns an empty string if dialog was canceled.
 
-          New function added.Example::
+         @python_v13 New function added.Example::
 
             ..
             dialog = xbmcgui.Dialog()
@@ -2578,7 +2798,8 @@ class DialogProgress:
     
     def create(self, heading: str, message: str = "") -> None:
         """
-        Create and show a progress dialog.
+        \python_func{ xbmcgui.DialogProgress().create(heading[, message]) } Create and
+        show a progress dialog.
 
         :param heading: string or unicode - dialog heading.
         :param message: [opt] string or unicode - message text.
@@ -2586,8 +2807,8 @@ class DialogProgress:
         .. note::
             Use `update()` to update lines and progressbar.
 
-          Renamed option **line1** to **message**.  Removed option **line2**.
-        Removed option **line3**.Example::
+         @python_v19 Renamed option **line1** to **message**. @python_v19
+        Removed option **line2**. @python_v19 Removed option **line3**.Example::
 
             ..
             pDialog = xbmcgui.DialogProgress()
@@ -2598,12 +2819,13 @@ class DialogProgress:
     
     def update(self, percent: int, message: str = "") -> None:
         """
-        Updates the progress dialog.
+        \python_func{ xbmcgui.DialogProgress().update(percent[, message]) } Updates the
+        progress dialog.
 
         :param percent: integer - percent complete. (0:100)
         :param message: [opt] string or unicode - message text.
-          Renamed option **line1** to **message**.  Removed option **line2**.
-        Removed option **line3**.Example::
+         @python_v19 Renamed option **line1** to **message**. @python_v19
+        Removed option **line2**. @python_v19 Removed option **line3**.Example::
 
             ..
             pDialog.update(25, 'Importing modules...')
@@ -2613,7 +2835,7 @@ class DialogProgress:
     
     def close(self) -> None:
         """
-        Close the progress dialog.
+        \python_func{ xbmcgui.DialogProgress().`close()` } Close the progress dialog.
 
         Example::
 
@@ -2625,7 +2847,8 @@ class DialogProgress:
     
     def iscanceled(self) -> bool:
         """
-        Checks progress is canceled.
+        \python_func{ xbmcgui.DialogProgress().`iscanceled()` } Checks progress is
+        canceled.
 
         :return: True if the user pressed cancel.
 
@@ -2646,9 +2869,32 @@ class DialogProgressBG:
     def __init__(self) -> None:
         pass
     
+    def deallocating(self) -> None:
+        """
+        This method is meant to be called from the destructor of the lowest level class.
+
+        It's virtual because it's a convenient place to receive messages that we're
+        about to go be deleted but prior to any real tear-down.
+
+        Any overloading classes need to remember to pass the call up the chain.
+        """
+        pass
+    
+    def deallocating(self) -> None:
+        """
+        This method is meant to be called from the destructor of the lowest level class.
+
+        It's virtual because it's a convenient place to receive messages that we're
+        about to go be deleted but prior to any real tear-down.
+
+        Any overloading classes need to remember to pass the call up the chain.
+        """
+        pass
+    
     def create(self, heading: str, message: str = "") -> None:
         """
-        Create and show a background progress dialog.
+        \python_func{ xbmcgui.DialogProgressBG().create(heading[, message]) } Create and
+        show a background progress dialog.
 
         :param heading: string or unicode - dialog heading.
         :param message: [opt] string or unicode - message text.
@@ -2670,6 +2916,7 @@ class DialogProgressBG:
                heading: str = "",
                message: str = "") -> None:
         """
+        \python_func{ xbmcgui.DialogProgressBG().update([percent, heading, message]) }
         Updates the background progress dialog.
 
         :param percent: [opt] integer - percent complete. (0:100)
@@ -2689,7 +2936,8 @@ class DialogProgressBG:
     
     def close(self) -> None:
         """
-        Close the background progress dialog
+        \python_func{ xbmcgui.DialogProgressBG().`close()` } Close the background
+        progress dialog
 
         Example::
 
@@ -2701,7 +2949,8 @@ class DialogProgressBG:
     
     def isFinished(self) -> bool:
         """
-        Checks progress is finished
+        \python_func{ xbmcgui.DialogProgressBG().`isFinished()` } Checks progress is
+        finished
 
         :return: True if the background dialog is active.
 
@@ -2720,11 +2969,14 @@ class ListItem:
 
     The list item control is used for creating item lists in Kodi
 
+    \python_class{ ListItem([label, label2, path]) }
+
     :param label: [opt] string
     :param label2: [opt] string
     :param path: [opt] string
-    **iconImage ** and**thumbnailImage ** are deprecated. Use**setArt()**.
-    Removed **iconImage** and **thumbnailImage**. Use **setArt()**.Example::
+     @python_v16 **iconImage** and **thumbnailImage** are deprecated.
+    Use **setArt()**. @python_v19 Removed **iconImage**
+    and **thumbnailImage**. Use **setArt()**.Example::
 
         ...
         listitem = xbmcgui.ListItem('Casino Royale')
@@ -2739,7 +2991,7 @@ class ListItem:
     
     def getLabel(self) -> str:
         """
-        Returns the listitem label.
+        \python_func{`getLabel()` } Returns the listitem label.
 
         :return: Label of item
 
@@ -2754,7 +3006,7 @@ class ListItem:
     
     def getLabel2(self) -> str:
         """
-        Returns the second listitem label.
+        \python_func{`getLabel2()` } Returns the second listitem label.
 
         :return: Second label of item
 
@@ -2769,7 +3021,7 @@ class ListItem:
     
     def setLabel(self, label: str) -> None:
         """
-        Sets the listitem's label.
+        \python_func{ setLabel(label) } Sets the listitem's label.
 
         :param label: string or unicode - text string.
 
@@ -2784,7 +3036,7 @@ class ListItem:
     
     def setLabel2(self, label: str) -> None:
         """
-        Sets the listitem's label2.
+        \python_func{ setLabel2(label) } Sets the listitem's label2.
 
         :param label: string or unicode - text string.
 
@@ -2799,7 +3051,7 @@ class ListItem:
     
     def setArt(self, dictionary: Dict[str, str]) -> None:
         """
-        Sets the listitem's art
+        \python_func{ setArt(values) } Sets the listitem's art
 
         :param values: dictionary - pairs of``{ label: value }``.  Some default art values
             (any string possible):
@@ -2817,7 +3069,7 @@ class ListItem:
         icon      string - image filename 
         ========= ======================= 
 
-          New function added.  Added new label **icon**.Example::
+         @python_v13 New function added. @python_v16 Added new label **icon**.Example::
 
             ...
             # setArt(values)
@@ -2828,11 +3080,10 @@ class ListItem:
     
     def setIsFolder(self, isFolder: bool) -> None:
         """
-        Sets if this listitem is a folder.
+        \python_func{ setIsFolder(isFolder) } Sets if this listitem is a folder.
 
         :param isFolder: bool - True=folder / False=not a folder (default).
-
-        New function added.
+        @python_v18 New function added.
 
         Example::
 
@@ -2846,7 +3097,7 @@ class ListItem:
     def setUniqueIDs(self, dictionary: Dict[str, str],
                      defaultrating: str = "") -> None:
         """
-        Sets the listitem's uniqueID
+        \python_func{ setUniqueIDs(values, defaultrating) } Sets the listitem's uniqueID
 
         :param values: dictionary - pairs of``{ label: value }``.
         :param defaultrating: [opt] string - the name of default rating.
@@ -2876,7 +3127,8 @@ class ListItem:
                   votes: int = 0,
                   defaultt: bool = False) -> None:
         """
-        Sets a listitem's rating. It needs at least type and rating param
+        \python_func{ setRating(type, rating, votes = 0, defaultt = False) } Sets a
+        listitem's rating. It needs at least type and rating param
 
         :param type: string - the type of the rating. Any string.
         :param rating: float - the value of the rating.
@@ -2904,12 +3156,12 @@ class ListItem:
     
     def addSeason(self, number: int, name: str = "") -> None:
         """
-        Add a season with name to a listitem. It needs at least the season number
+        \python_func{ addSeason(number, name = "") } Add a season with name to a
+        listitem. It needs at least the season number
 
         :param number: int - the number of the season.
         :param name: string - the name of the season. Default "".
-
-        New function added.
+        @python_v18 New function added.
 
         Example::
 
@@ -2922,7 +3174,8 @@ class ListItem:
     
     def getArt(self, key: str) -> str:
         """
-        Returns a listitem art path as a string, similar to an infolabel.
+        \python_func{`getArt(key)` } Returns a listitem art path as a string, similar to
+        an infolabel.
 
         :param key: string - art name.  Some default art values (any string possible):
 
@@ -2939,7 +3192,9 @@ class ListItem:
         icon      string - image path 
         ========= =================== 
 
-          New function added.Example::    ...
+         @python_v17 New function added.Example::
+
+            ...
             poster = listitem.getArt('poster')
             ...
         """
@@ -2947,7 +3202,8 @@ class ListItem:
     
     def getUniqueID(self, key: str) -> str:
         """
-        Returns a listitem uniqueID as a string, similar to an infolabel.
+        \python_func{`getUniqueID(key)` } Returns a listitem uniqueID as a string,
+        similar to an infolabel.
 
         :param key: string - uniqueID name.  Some default uniqueID values (any string
             possible):
@@ -2971,7 +3227,7 @@ class ListItem:
     
     def getRating(self, key: str) -> float:
         """
-        Returns a listitem rating as a float.
+        \python_func{`getRating(key)` } Returns a listitem rating as a float.
 
         :param key: string - rating type.  Some default key values (any string possible):
 
@@ -2994,7 +3250,7 @@ class ListItem:
     
     def getVotes(self, key: str) -> int:
         """
-        Returns a listitem votes as a integer.
+        \python_func{`getVotes(key)` } Returns a listitem votes as a integer.
 
         :param key: string - rating type.  Some default key values (any string possible):
 
@@ -3017,7 +3273,7 @@ class ListItem:
     
     def select(self, selected: bool) -> None:
         """
-        Sets the listitem's selected status.
+        \python_func{ select(selected) } Sets the listitem's selected status.
 
         :param selected: bool - True=selected/False=not selected
 
@@ -3032,7 +3288,7 @@ class ListItem:
     
     def isSelected(self) -> bool:
         """
-        Returns the listitem's selected status.
+        \python_func{`isSelected()` } Returns the listitem's selected status.
 
         :return: bool - true if selected, otherwise false
 
@@ -3047,7 +3303,7 @@ class ListItem:
     
     def setInfo(self, type: str, infoLabels: Dict[str, str]) -> None:
         """
-        Sets the listitem's infoLabels.
+        \python_func{ setInfo(type, infoLabels) } Sets the listitem's infoLabels.
 
         :param type: string - type of
         :param infoLabels: dictionary - pairs of``{ label: value }``
@@ -3190,15 +3446,16 @@ class ListItem:
         gameclient string (game.libretro.fceumm) 
         ========== ============================= 
 
-          Added new label**discnumber **.**duration ** has to be set in seconds.
-        Added new label**mediatype **.  Added
-        labels**setid **,**set **,**imdbnumber **,**code **,**dbid **
-        (video),**path ** and**userrating **. Expanded the possible infoLabels
-        for the option**mediatype **.  Added new**game ** type and associated
-        infolabels. Added labels**dbid ** (music),**setoverview **,**tag **,**sor
-        tepisode **,**sortseason **,**episodeguide **,**showlink **. Extended labe
-        ls**genre **,**country **,**director **,**studio **,**writer **,**tag **,**c
-        redits** to also use a list of strings.Example::
+         @python_v14 Added new label**discnumber **. @python_v15**duration ** has to be
+        set in seconds. @python_v16 Added new label**mediatype **. @python_v17 Added
+        labels**setid **,**set **,**imdbnumber **,**code **,**dbid ** (video),**path **
+        and**userrating **. Expanded the possible infoLabels for the option**mediatype **.
+        @python_v18 Added new**game ** type and associated infolabels. Added
+        labels**dbid ** (music),**setoverview **,**tag **,**sortepisode **,**sortseason **,**
+        episodeguide **,**showlink **. Extended labels**genre **,**country **,**director**,*
+        *studio **,**writer **,**tag **,**credits** to also use a list of strings.
+
+        Example::
 
             ...
             listitem.setInfo('video', { 'genre': 'Comedy' })
@@ -3208,7 +3465,7 @@ class ListItem:
     
     def setCast(self, actors: List[Dict[str, str]]) -> None:
         """
-        Set cast including thumbnails
+        \python_func{ setCast(actors) } Set cast including thumbnails
 
         :param actors: list of dictionaries (see below for relevant keys)
 
@@ -3223,7 +3480,9 @@ class ListItem:
         order     integer (1)                                   
         ========= ============================================= 
 
-          New function added.Example::
+         @python_v17 New function added.
+
+        Example::
 
             ...
             actors = [{"name": "Actor 1", "role": "role 1"}, {"name": "Actor 2", "role": "role 2"}]
@@ -3234,7 +3493,8 @@ class ListItem:
     
     def setAvailableFanart(self, images: List[Dict[str, str]]) -> None:
         """
-        Set available images (needed for video scrapers)
+        \python_func{ setAvailableFanart(images) } Set available images (needed for
+        video scrapers)
 
         :param images: list of dictionaries (see below for relevant keys)
 
@@ -3249,7 +3509,7 @@ class ListItem:
 
         | colors | [opt] string (either comma separated Kodi hex values
         ("FFFFFFFF,DDDDDDDD") or TVDB RGB Int Triplets
-        ("|68,69,59|69,70,58|78,78,68|"))  New function added.
+        ("|68,69,59|69,70,58|78,78,68|")) @python_v18 New function added.
 
         Example::
 
@@ -3269,7 +3529,8 @@ class ListItem:
                             isgz: bool = False,
                             season: int = -1) -> None:
         """
-        Add an image to available artworks (needed for video scrapers)
+        \python_func{ addAvailableArtwork(images) } Add an image to available artworks
+        (needed for video scrapers)
 
         :param url: string (image path url)
         :param art_type: string (image type)
@@ -3279,7 +3540,8 @@ class ListItem:
         :param post: [opt] bool (use post to retrieve the image, default false)
         :param isgz: [opt] bool (use gzip to retrieve the image, default false)
         :param season: [opt] integer (number of season in case of season thumb)
-          New function added.  New param added (preview).Example::
+         @python_v18 New function added. @python_v19 New param added
+        (preview).Example::
 
             ...
             listitem.addAvailableArtwork(path_to_image_1, "thumb")
@@ -3289,7 +3551,7 @@ class ListItem:
     
     def addStreamInfo(self, cType: str, dictionary: Dict[str, str]) -> None:
         """
-        Add a stream with details.
+        \python_func{ addStreamInfo(type, values) } Add a stream with details.
 
         :param type: string - type of stream(video/audio/subtitle).
         :param values: dictionary - pairs of { label: value }.
@@ -3335,7 +3597,8 @@ class ListItem:
     def addContextMenuItems(self, items: List[Tuple[str, str]],
                             replaceItems: bool = False) -> None:
         """
-        Adds item(s) to the context menu for media lists.
+        \python_func{ addContextMenuItems([(label, action),*]) } Adds item(s) to the
+        context menu for media lists.
 
         :param items: list - [(label, action),*] A list of tuples consisting of label and
             action pairs.  label string or unicode - item's label.action
@@ -3346,7 +3609,8 @@ class ListItem:
             optional arguments.  Once you use a keyword, all following
             arguments require the keyword.
 
-          Completely removed previously available argument **replaceItems**.Example::
+         @python_v17 Completely removed previously available
+        argument **replaceItems**.Example::
 
             ...
             listitem.addContextMenuItems([('Theater Showtimes', 'RunScript(special://home/scripts/showtimes/default.py,Iron Man)')])
@@ -3356,7 +3620,8 @@ class ListItem:
     
     def setProperty(self, key: str, value: str) -> None:
         """
-        Sets a listitem property, similar to an infolabel.
+        \python_func{ setProperty(key, value) } Sets a listitem property, similar to an
+        infolabel.
 
         :param key: string - property name.
         :param value: string or unicode - value of property.
@@ -3381,11 +3646,12 @@ class ListItem:
     
     def setProperties(self, dictionary: Dict[str, str]) -> None:
         """
-        Sets multiple properties for listitem's
+        \python_func{ setProperties(values) } Sets multiple properties for listitem's
 
         :param values: dictionary - pairs of``{ label: value }``.
+        @python_v18 New function added.Example::
 
-        New function added.Example::    ...
+            ...
             # setProperties(values)
             listitem.setProperties({ 'AspectRatio': '1.85', 'StartOffset' : '256.4' })
             ...
@@ -3394,7 +3660,8 @@ class ListItem:
     
     def getProperty(self, key: str) -> str:
         """
-        Returns a listitem property as a string, similar to an infolabel.
+        \python_func{ getProperty(key) } Returns a listitem property as a string,
+        similar to an infolabel.
 
         :param key: string - property name.
 
@@ -3413,7 +3680,7 @@ class ListItem:
     
     def setPath(self, path: str) -> None:
         """
-        Sets the listitem's path.
+        \python_func{ setPath(path) } Sets the listitem's path.
 
         :param path: string or unicode - path, activated when item is clicked.
 
@@ -3430,7 +3697,7 @@ class ListItem:
     
     def setMimeType(self, mimetype: str) -> None:
         """
-        Sets the listitem's mimetype if known.
+        \python_func{ setMimeType(mimetype) } Sets the listitem's mimetype if known.
 
         :param mimetype: string or unicode - mimetype
 
@@ -3441,18 +3708,19 @@ class ListItem:
     
     def setContentLookup(self, enable: bool) -> None:
         """
-        Enable or disable content lookup for item.
+        \python_func{ setContentLookup(enable) } Enable or disable content lookup for
+        item.
 
         If disabled, HEAD requests to e.g determine mime type will not be sent.
 
         :param enable: bool to enable content lookup
-          New function added.
+         @python_v16 New function added.
         """
         pass
     
     def setSubtitles(self, subtitleFiles: List[str]) -> None:
         """
-        Sets subtitles for this listitem.
+        \python_func{ setSubtitles(subtitleFiles) } Sets subtitles for this listitem.
 
         :param subtitleFiles: list with path to subtitle files
 
@@ -3461,44 +3729,46 @@ class ListItem:
             ...
             listitem.setSubtitles(['special://temp/example.srt', 'http://example.com/example.srt'])
             ...
-          New function added.
+         @python_v14 New function added.
         """
         pass
     
     def getPath(self) -> str:
         """
-        Returns the path of this listitem.
+        \python_func{`getPath()` } Returns the path of this listitem.
 
         :return: [string] filename
 
-          New function added.
+         @python_v17 New function added.
         """
         return ""
     
-    def getVideoInfoTag(self) -> _xbmc.InfoTagVideo:
+    def getVideoInfoTag(self) ->InfoTagVideo:
         """
-        Returns the VideoInfoTag for this item.
+        \python_func{`getVideoInfoTag()` } Returns the VideoInfoTag for this item.
 
         :return: video info tag
 
-          New function added.
+         @python_v15 New function added.
         """
-        return _xbmc.InfoTagVideo()
+        return InfoTagVideo()
     
-    def getMusicInfoTag(self) -> _xbmc.InfoTagMusic:
+    def getMusicInfoTag(self) -> InfoTagMusic:
         """
-        Returns the MusicInfoTag for this item.
+        \python_func{`getMusicInfoTag()` } Returns the MusicInfoTag for this item.
 
         :return: music info tag
 
-          New function added.
+         @python_v15 New function added.
         """
-        return _xbmc.InfoTagMusic()
+        return InfoTagMusic()
     
 
 class Action:
     """
     **`Action` class.**
+
+    \python_class{ xbmcgui.Action(): }
 
     This class serves in addition to identify carried out kodi_key_action_ids of
     Kodi and to be able to carry out thereby own necessary steps.
@@ -3512,7 +3782,7 @@ class Action:
     
     def getId(self) -> int:
         """
-        To get kodi_key_action_ids
+        \python_func{`getId()` } To get kodi_key_action_ids
 
         This function returns the identification code used by the explained order, it is
         necessary to determine the type of command from kodi_key_action_ids.
@@ -3531,7 +3801,7 @@ class Action:
     
     def getButtonCode(self) -> int:
         """
-        Returns the button code for this action.
+        \python_func{`getButtonCode()` } Returns the button code for this action.
 
         :return: [integer] button code
         """
@@ -3539,7 +3809,8 @@ class Action:
     
     def getAmount1(self) -> float:
         """
-        Returns the first amount of force applied to the thumbstick.
+        \python_func{`getAmount1()` } Returns the first amount of force applied to the
+        thumbstick.
 
         :return: [float] first amount
         """
@@ -3547,12 +3818,13 @@ class Action:
     
     def getAmount2(self) -> float:
         """
-        Returns the second amount of force applied to the thumbstick.
+        \python_func{`getAmount2()` } Returns the second amount of force applied to the
+        thumbstick.
 
         :return: [float] second amount
         """
         return 0.0
-
+    
 
 class Window:
     """
@@ -3565,7 +3837,7 @@ class Window:
     classes `WindowDialog`,`WindowXML` and `WindowXMLDialog` with inserted and
     available.
 
-    Constructor for windowConstructor for window
+    Constructor for window\python_class{ xbmcgui.Window([existingWindowId]): }
 
     Creates a new from Add-On usable window class. This is to create window for
     related controls by system calls.
@@ -3588,7 +3860,7 @@ class Window:
     
     def show(self) -> None:
         """
-        Show this window.
+        \python_func{`show()` } Show this window.
 
         Shows this window by activating it, calling `close()` after it wil activate the
         current window again.
@@ -3602,7 +3874,7 @@ class Window:
     
     def setFocus(self, pControl: Control) -> None:
         """
-        Give the supplied control focus.
+        \python_func{ setFocus(Control) } Give the supplied control focus.
 
         :param `Control`: `Control` class to focus
         :raises TypeError: If supplied argument is not a `Control` type
@@ -3613,7 +3885,7 @@ class Window:
     
     def setFocusId(self, iControlId: int) -> None:
         """
-        Gives the control with the supplied focus.
+        \python_func{ setFocusId(ControlId) } Gives the control with the supplied focus.
 
         :param ControlId: [integer] On skin defined id of control
         :raises SystemError: On Internal error
@@ -3623,7 +3895,7 @@ class Window:
     
     def getFocus(self) -> Control:
         """
-        Returns the control which is focused.
+        \python_func{ getFocus(Control) } Returns the control which is focused.
 
         :return: Focused control class
 
@@ -3634,7 +3906,7 @@ class Window:
     
     def getFocusId(self) -> int:
         """
-        Returns the id of the control which is focused.
+        \python_func{ getFocusId(int) } Returns the id of the control which is focused.
 
         :return: Focused control id
 
@@ -3645,7 +3917,7 @@ class Window:
     
     def removeControl(self, pControl: Control) -> None:
         """
-        Removes the control from this window.
+        \python_func{ removeControl(Control) } Removes the control from this window.
 
         :param `Control`: `Control` class to remove
         :raises TypeError: If supplied argument is not a `Control` type
@@ -3657,7 +3929,8 @@ class Window:
     
     def removeControls(self, pControls: List[Control]) -> None:
         """
-        Removes a list of controls from this window.
+        \python_func{ removeControls(List) } Removes a list of controls from this
+        window.
 
         :param `List`: `List` with controls to remove
         :raises TypeError: If supplied argument is not a `Control` type
@@ -3670,23 +3943,28 @@ class Window:
     
     def getHeight(self) -> int:
         """
-        Returns the height of this `Window` instance.
+        \python_func{`getHeight()` } Returns the height of this `Window` instance.
 
-        :return: `Window` height in pixels  Function changed
+        :return: `Window` height in pixels
+
+         @python_v18 Function changed
         """
         return 0
     
     def getWidth(self) -> int:
         """
-        Returns the width of this `Window` instance.
+        \python_func{`getWidth()` } Returns the width of this `Window` instance.
 
-        :return: `Window` width in pixels  Function changed
+        :return: `Window` width in pixels
+
+         @python_v18 Function changed
         """
         return 0
     
     def setProperty(self, key: str, value: str) -> None:
         """
-        Sets a window property, similar to an infolabel.
+        \python_func{ setProperty(key, value) } Sets a window property, similar to an
+        infolabel.
 
         :param key: string - property name.
         :param value: string or unicode - value of property.
@@ -3708,7 +3986,8 @@ class Window:
     
     def getProperty(self, key: str) -> str:
         """
-        Returns a window property as a string, similar to an infolabel.
+        \python_func{ getProperty(key) } Returns a window property as a string, similar
+        to an infolabel.
 
         :param key: string - property name.
 
@@ -3728,7 +4007,7 @@ class Window:
     
     def clearProperty(self, key: str) -> None:
         """
-        Clears the specific window property.
+        \python_func{ clearProperty(key) } Clears the specific window property.
 
         :param key: string - property name.
 
@@ -3749,7 +4028,7 @@ class Window:
     
     def clearProperties(self) -> None:
         """
-        Clears all window properties.
+        \python_func{`clearProperties()` } Clears all window properties.
 
         Example::
 
@@ -3762,7 +4041,7 @@ class Window:
     
     def close(self) -> None:
         """
-        Closes this window.
+        \python_func{`close()` } Closes this window.
 
         Closes this window by activating the old window.
 
@@ -3773,13 +4052,13 @@ class Window:
     
     def doModal(self) -> None:
         """
-        Display this window until `close()` is called.
+        \python_func{`doModal()` } Display this window until `close()` is called.
         """
         pass
     
     def addControl(self, pControl: Control) -> None:
         """
-        Add a `Control` to this window.
+        \python_func{ addControl(Control) } Add a `Control` to this window.
 
         :param `Control`: `Control` to add
         :raises TypeError: If supplied argument is not a `Control` type
@@ -3811,7 +4090,7 @@ class Window:
     
     def addControls(self, pControls: List[Control]) -> None:
         """
-        Add a list of Controls to this window.
+        \python_func{ addControls(List) } Add a list of Controls to this window.
 
         :param `List`: `List` with controls to add
         :raises TypeError: If supplied argument is not of `List` type, or a control is not
@@ -3823,7 +4102,7 @@ class Window:
     
     def getControl(self, iControlId: int) -> Control:
         """
-        Gets the control from this window.
+        \python_func{ getControl(controlId) } Gets the control from this window.
 
         :param controlId: `Control` id to get
         :raises Exception: If `Control` doesn't exist
@@ -3839,7 +4118,7 @@ class Window:
     
     def onAction(self, action: Action) -> None:
         """
-        **onAction method.**
+        \python_func{ onAction(self, Action action) }**onAction method.**
 
         This method will receive all actions that the main program will send to this
         window.
@@ -3873,7 +4152,7 @@ class Window:
     
     def onControl(self, control: Control) -> None:
         """
-        **onControl method.**
+        \python_func{ onControl(self, Control) }**onControl method.**
 
         This method will receive all click events on owned and selected controls when
         the control itself doesn't handle the message.
@@ -3893,7 +4172,7 @@ class Window:
     
     def onClick(self, controlId: int) -> None:
         """
-        **onClick method.**
+        \python_func{ onClick(self, int controlId) }**onClick method.**
 
         This method will receive all click events that the main program will send to
         this window.
@@ -3914,7 +4193,7 @@ class Window:
     
     def onDoubleClick(self, controlId: int) -> None:
         """
-        **onDoubleClick method.**
+        \python_func{ onDoubleClick(self, int controlId) }**onDoubleClick method.**
 
         This method will receive all double click events that the main program will send
         to this window.
@@ -3935,7 +4214,7 @@ class Window:
     
     def onFocus(self, controlId: int) -> None:
         """
-        **onFocus method.**
+        \python_func{ onFocus(self, int controlId) }**onFocus method.**
 
         This method will receive all focus events that the main program will send to
         this window.
@@ -3956,7 +4235,7 @@ class Window:
     
     def onInit(self) -> None:
         """
-        **onInit method.**
+        \python_func{ onInit(self) }**onInit method.**
 
         This method will be called to initialize the window
 
@@ -3976,6 +4255,8 @@ class Window:
 class WindowDialog(Window):
     """
     **GUI window dialog class for Add-Ons.**
+
+    \python_class{ xbmcgui.WindowDialog(int windowId): }
 
     Creates a new window from Add-On usable dialog class. This is to create window
     for related controls by system calls.
@@ -4001,6 +4282,9 @@ class WindowXML(Window):
     """
     **GUI xml window class.**
 
+    \python_class{ xbmcgui.WindowXML(xmlFilename, scriptPath[, defaultSkin,
+    defaultRes]) }
+
     Creates a new xml file based window class.
 
     .. note::
@@ -4021,8 +4305,9 @@ class WindowXML(Window):
     Skin folder structure is e.g.**resources/skins/Default/720p **
 
     Deleting this window will activate the old window that was active and
-    resets (not delete) all controls that are associated with this window.
-    New param added**isMedia **.Example::
+    resets (not delete) all controls that are associated with this window. @python_v18 New param added**isMedia **.
+
+    Example::
 
         ..
         win = xbmcgui.WindowXML('script-Lyrics-main.xml', xbmcaddon.Addon().getAddonInfo('path').decode('utf-8'), 'default', '1080i', False)
@@ -4051,9 +4336,9 @@ class WindowXML(Window):
         pass
     
     def addItem(self, item: Union[str, ListItem],
-                position: int = INT_MAX) -> None:
+                position: int = sys.maxsize) -> None:
         """
-        Add a new item to this `Window ``List`.
+        \python_func{ addItem(item[, position]) } Add a new item to this `Window ``List`.
 
         :param item: string, unicode or `ListItem` - item to add.
         :param position: [opt] integer - position of item to add. (NO Int = Adds to bottom,0
@@ -4071,7 +4356,7 @@ class WindowXML(Window):
     
     def addItems(self, items: List[Union[str, ListItem]]) -> None:
         """
-        Add a list of items to to the window list.
+        \python_func{ addItems(items) } Add a list of items to to the window list.
 
         :param items: `List` - list of strings, unicode objects or ListItems to add.
 
@@ -4085,7 +4370,8 @@ class WindowXML(Window):
     
     def removeItem(self, position: int) -> None:
         """
-        Removes a specified item based on position, from the `Window ``List`.
+        \python_func{ removeItem(position) } Removes a specified item based on position,
+        from the `Window ``List`.
 
         :param position: integer - position of item to remove.
 
@@ -4099,7 +4385,8 @@ class WindowXML(Window):
     
     def getCurrentListPosition(self) -> int:
         """
-        Gets the current position in the `Window ``List`.
+        \python_func{`getCurrentListPosition()` } Gets the current position in
+        the `Window ``List`.
 
         Example::
 
@@ -4111,7 +4398,8 @@ class WindowXML(Window):
     
     def setCurrentListPosition(self, position: int) -> None:
         """
-        Set the current position in the `Window ``List`.
+        \python_func{ setCurrentListPosition(position) } Set the current position in
+        the `Window ``List`.
 
         :param position: integer - position of item to set.
 
@@ -4125,7 +4413,8 @@ class WindowXML(Window):
     
     def getListItem(self, position: int) -> ListItem:
         """
-        Returns a given `ListItem` in this `Window ``List`.
+        \python_func{ getListItem(position) } Returns a given `ListItem` in
+        this `Window ``List`.
 
         :param position: integer - position of item to return.
 
@@ -4139,7 +4428,8 @@ class WindowXML(Window):
     
     def getListSize(self) -> int:
         """
-        Returns the number of items in this `Window ``List`.
+        \python_func{`getListSize()` } Returns the number of items in
+        this `Window ``List`.
 
         Example::
 
@@ -4151,7 +4441,7 @@ class WindowXML(Window):
     
     def clearList(self) -> None:
         """
-        Clear the `Window ``List`.
+        \python_func{`clearList()` } Clear the `Window ``List`.
 
         Example::
 
@@ -4163,17 +4453,19 @@ class WindowXML(Window):
     
     def setContainerProperty(self, strProperty: str, strValue: str) -> None:
         """
-        Sets a container property, similar to an infolabel.
+        \python_func{ setContainerProperty(key, value) } Sets a container property,
+        similar to an infolabel.
 
         :param key: string - property name.
         :param value: string or unicode - value of property.
 
         .. note::
-            Key is NOT case sensitive.  You can use the above as keywords for
-            arguments and skip certain optional arguments.  Once you use a
+            Key is NOT case sensitive. You can use the above as keywords for
+            arguments and skip certain optional arguments. Once you use a
             keyword, all following arguments require the keyword.
 
-          Changed function from **setProperty** to **setContainerProperty**.Example::
+         @python_v17 Changed function from **setProperty**
+        to **setContainerProperty**.Example::
 
             ..
             self.setContainerProperty('Category', 'Newest')
@@ -4183,7 +4475,7 @@ class WindowXML(Window):
     
     def setContent(self, strValue: str) -> None:
         """
-        Sets the content type of the container.
+        \python_func{ setContent(value) } Sets the content type of the container.
 
         :param value: string or unicode - content value.
         **Available content types**
@@ -4215,7 +4507,9 @@ class WindowXML(Window):
         years       Music, Videos                             
         =========== ========================================= 
 
-          Added new function.Example::
+         @python_v18 Added new function.
+
+        Example::
 
             ..
             self.setContent('movies')
@@ -4225,9 +4519,10 @@ class WindowXML(Window):
     
     def getCurrentContainerId(self) -> int:
         """
-        Get the id of the currently visible container.
+        \python_func{`getCurrentContainerId()` } Get the id of the currently visible
+        container.
 
-          Added new function.
+         @python_v17 Added new function.
 
         Example::
 
@@ -4241,6 +4536,9 @@ class WindowXML(Window):
 class WindowXMLDialog(WindowXML):
     """
     **GUI xml window dialog **
+
+    \python_class{ xbmcgui.WindowXMLDialog(xmlFilename, scriptPath[, defaultSkin,
+    defaultRes]) }
 
     Creates a new xml file based window dialog class.
 
@@ -4289,7 +4587,8 @@ class WindowXMLDialog(WindowXML):
 
 def getCurrentWindowId() -> int:
     """
-    Returns the id for the current 'active' window as an integer.
+    \python_func{ xbmcgui.getCurrentWindowId() } Returns the id for the current
+    'active' window as an integer.
 
     :return: The currently active window Id
 
@@ -4304,7 +4603,8 @@ def getCurrentWindowId() -> int:
 
 def getCurrentWindowDialogId() -> int:
     """
-    Returns the id for the current 'active' dialog as an integer.
+    \python_func{ xbmcgui.getCurrentWindowDialogId() } Returns the id for the
+    current 'active' dialog as an integer.
 
     :return: The currently active dialog Id
 
@@ -4319,17 +4619,22 @@ def getCurrentWindowDialogId() -> int:
 
 def getScreenHeight() -> int:
     """
-    Returns the height of this screen.
+    \python_func{`getScreenHeight()` } Returns the height of this screen.
 
-    :return: Screen height  New function added.
+    :return: Screen height
+
+     @python_v18 New function added.
     """
     return 0
 
 
 def getScreenWidth() -> int:
     """
-    Returns the width of this screen.
+    \python_func{`getScreenWidth()` } Returns the width of this screen.
 
-    :return: Screen width  New function added.
+    :return: Screen width
+
+     @python_v18 New function added.
     """
     return 0
+
